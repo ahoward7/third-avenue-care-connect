@@ -1,0 +1,14 @@
+.interpolate-keywords {
+  interpolate-size: allow-keywords;
+}
+
+.nuxt-page {
+  min-height: calc(100vh - 368px);
+  max-width: 1000px;
+  width: 100%;
+}
+
+.text-5half-xl {
+  font-size: 3.40rem;
+  line-height: 1;
+}

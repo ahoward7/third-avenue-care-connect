@@ -1,0 +1,24 @@
+CREATE TABLE profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255),
+    name VARCHAR(100),
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    bio TEXT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255),
+    phone VARCHAR(20) NOT NULL,
+    address TEXT,
+    notes TEXT,
+    profileType ENUM('family', 'sitter') NOT NULL,
+    isApproved BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE children (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    family_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    FOREIGN KEY (family_id) REFERENCES profiles(id) ON DELETE CASCADE
+);
