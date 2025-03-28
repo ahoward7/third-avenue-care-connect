@@ -1,19 +1,19 @@
 <template>
   <div class="flex flex-col gap-4 w-full">
     <div class="w-full">
-      <TACCInput v-model="displayName" placeholder="Display Name" :invalid="errors.displayName !== undefined" />
+      <TACCInput v-model="displayName" placeholder="Display Name" :invalid="complteted && errors.displayName !== undefined" />
       <p v-if="submitted && errors.displayName" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.displayName }}
       </p>
     </div>
     <div class="w-full">
-      <TACCInput v-model="email" placeholder="Email" :invalid="errors.email !== undefined" />
+      <TACCInput v-model="email" placeholder="Email" :invalid="complteted && errors.email !== undefined" />
       <p v-if="submitted && errors.email" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.email }}
       </p>
     </div>
     <div class="w-full">
-      <TACCInput v-model="phone" placeholder="Phone" :invalid="errors.phone !== undefined" />
+      <TACCInput v-model="phone" placeholder="Phone" :invalid="complteted && errors.phone !== undefined" />
       <p v-if="submitted && errors.phone" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.phone }}
       </p>
