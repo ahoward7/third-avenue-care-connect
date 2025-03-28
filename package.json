@@ -18,10 +18,10 @@
     "@pinia/nuxt": "^0.10.1",
     "@vueuse/core": "^12.7.0",
     "@vueuse/nuxt": "^12.7.0",
-    "mysql2": "^3.14.0",
     "nuxt": "^3.15.2",
     "nuxt-auth-utils": "^0.5.16",
     "nuxt-storage": "^1.2.2",
+    "pg": "^8.14.1",
     "pinia": "^3.0.1",
     "reka-ui": "^2.1.1",
     "vee-validate": "^4.15.0",
@@ -34,6 +34,7 @@
     "@iconify/icons-heroicons": "^1.2.9",
     "@nuxt/eslint": "^1.0.1",
     "@types/node": "^22.13.13",
+    "@types/pg": "^8.11.11",
     "eslint": "^9.20.1",
     "typescript": "^5.7.3"
   }

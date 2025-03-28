@@ -28,7 +28,6 @@ const familyProfile: Ref<FamilyProfile> = ref({
   password: '',
   phone: '666-666-6666',
   address: '505 Maple St, Springfield',
-  notes: 'We have a cat named Whiskers.',
   children: [
     {
       name: 'Emma',
