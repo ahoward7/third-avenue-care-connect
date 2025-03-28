@@ -66,7 +66,7 @@ function submitForm() {
   submitted.value = true
 
   handleSubmit((values) => {
-    emit('signup', values)
+    emit('signup', { ...values, type: 'family' })
   })()
 }
 </script>

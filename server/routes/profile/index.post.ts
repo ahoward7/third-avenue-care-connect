@@ -17,6 +17,8 @@ export default defineEventHandler(async (event: H3Event) => {
 
     await client.connect()
 
+    console.log(signupForm)
+
     if (signupForm.type === 'family') {
       const familySignupFrom = signupForm as FamilySignupForm
       const familyProfile: Partial<FamilyProfile> = {
@@ -33,6 +35,8 @@ export default defineEventHandler(async (event: H3Event) => {
         familyProfile.phone,
         familyProfile.displayName,
       ]
+
+      console.log(values)
 
       const result = await client.query(
         `INSERT INTO profiles (${insertFields.join(', ')})
