@@ -67,3 +67,8 @@ export interface Job {
   kids: ChildProfile[]
   description: string
 }
+
+export interface LoginForm {
+  email: string
+  password: string
+}

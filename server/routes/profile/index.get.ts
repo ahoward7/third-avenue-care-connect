@@ -1,32 +1,28 @@
-import type { H3Event } from 'h3'
 import { defineEventHandler } from 'h3'
+import pgk from 'pg'
+import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
-export default defineEventHandler(async (event: H3Event) => {
-  // try {
-  //   const { id } = getQuery(event) as { id: string }
+const { Client } = pgk
 
-  //   const { dbHost, dbUser, dbPassword, dbName } = useRuntimeConfig()
+export default defineEventHandler(async () => {
+  try {
+    const client = new Client({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    })
 
-  //   const connection = await mysql.createConnection({
-  //     host: dbHost,
-  //     user: dbUser,
-  //     password: dbPassword,
-  //     database: dbName,
-  //   })
+    await client.connect()
 
-  //   const result = await connection.execute('SELECT * FROM profiles WHERE id = ?', [id])
+    const result = await client.query('SELECT * FROM profiles')
 
-  //   await connection.end()
+    await client.end()
 
-  //   if (!result[0]) {
-  //     return { error: 'Profile not found' }
-  //   }
-
-  //   await connection.end()
-  //   return result[0]
-  // }
-  // catch (e) {
-  //   console.error(e)
-  //   return { error: 'Database error' }
-  // }
+    return convertKeysToCamel(result.rows)
+  }
+  catch (e) {
+    console.error(e)
+    throw createError(`POSTGRES: ${e}`)
+  }
 })

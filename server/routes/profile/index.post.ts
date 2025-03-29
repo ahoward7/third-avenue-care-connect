@@ -17,8 +17,6 @@ export default defineEventHandler(async (event: H3Event) => {
 
     await client.connect()
 
-    console.log(signupForm)
-
     if (signupForm.type === 'family') {
       const familySignupFrom = signupForm as FamilySignupForm
       const familyProfile: Partial<FamilyProfile> = {
@@ -36,8 +34,6 @@ export default defineEventHandler(async (event: H3Event) => {
         familyProfile.displayName,
       ]
 
-      console.log(values)
-
       const result = await client.query(
         `INSERT INTO profiles (${insertFields.join(', ')})
         VALUES (${insertFields.map((_, i) => `$${i + 1}`).join(', ')}) RETURNING *`,
@@ -48,32 +44,36 @@ export default defineEventHandler(async (event: H3Event) => {
       return result.rows[0]
     }
 
-    const sitterSignupForm = signupForm as SitterSignupForm
-    const sitterProfile: Partial<SitterProfile> = {
-      email: sitterSignupForm.email,
-      phone: sitterSignupForm.phone,
-      profileType: 'sitter',
-      firstName: sitterSignupForm.firstName,
-      lastName: sitterSignupForm.lastName,
+    if (signupForm.type === 'sitter') {
+      const sitterSignupForm = signupForm as SitterSignupForm
+      const sitterProfile: Partial<SitterProfile> = {
+        email: sitterSignupForm.email,
+        phone: sitterSignupForm.phone,
+        profileType: 'sitter',
+        firstName: sitterSignupForm.firstName,
+        lastName: sitterSignupForm.lastName,
+      }
+
+      const insertFields = ['profile_type', 'email', 'phone', 'first_name', 'last_name']
+      const values = [
+        sitterProfile.profileType,
+        sitterProfile.email,
+        sitterProfile.phone,
+        sitterProfile.firstName,
+        sitterProfile.lastName,
+      ]
+
+      const result = await client.query(
+        `INSERT INTO profiles (${insertFields.join(', ')})
+      VALUES (${insertFields.map((_, i) => `$${i + 1}`).join(', ')}) RETURNING *`,
+        values,
+      )
+
+      await client.end()
+      return result.rows[0]
     }
 
-    const insertFields = ['profile_type', 'email', 'phone', 'first_name', 'last_name']
-    const values = [
-      sitterProfile.profileType,
-      sitterProfile.email,
-      sitterProfile.phone,
-      sitterProfile.firstName,
-      sitterProfile.lastName,
-    ]
-
-    const result = await client.query(
-      `INSERT INTO profiles (${insertFields.join(', ')})
-      VALUES (${insertFields.map((_, i) => `$${i + 1}`).join(', ')}) RETURNING *`,
-      values,
-    )
-
-    await client.end()
-    return result.rows[0]
+    throw new Error('Invalid profile type')
   }
   catch (e) {
     console.error(e)
