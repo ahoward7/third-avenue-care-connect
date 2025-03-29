@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+const authStore = useAuthStore()
+
 async function login(loginInfo: LoginForm) {
   const user = await $fetch('/admin/login', {
     method: 'POST',
@@ -23,6 +25,7 @@ async function login(loginInfo: LoginForm) {
   })
 
   if (user) {
+    authStore.loginAdmin()
     navigateTo('/admin')
   }
 }

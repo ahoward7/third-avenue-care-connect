@@ -18,7 +18,17 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-function login() {
-  authStore.isLoggedIn = true
+async function login(loginValues: LoginForm) {
+  try {
+    const profile = await $fetch('/auth/login', {
+      method: 'POST',
+      body: loginValues,
+    }) as FamilyProfile | SitterProfile
+
+    authStore.login(profile)
+  }
+  catch (e) {
+    console.error('Login failed:', e)
+  }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[600px] flex pt-3 border-2 rounded-md" :class="index % 2 === 0 ? 'border-green' : 'border-purple'">
+  <div class="w-[600px] flex pt-3 border-[3px] rounded-md bg-lightgray/20" :class="index % 2 === 0 ? 'border-green' : 'border-purple'">
     <div class="grow flex flex-col gap-2">
       <div class="text-gray font-bold text-sm px-4">
         {{ job.timing }}

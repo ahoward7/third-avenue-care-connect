@@ -55,4 +55,8 @@ async function updateProfile(profile: FamilyProfile | SitterProfile) {
     console.error(error)
   }
 }
+
+definePageMeta({
+  middleware: 'admin',
+})
 </script>

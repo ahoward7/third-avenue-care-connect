@@ -5,27 +5,42 @@
       <AppTitle size="small" />
     </NuxtLink>
     <div class="flex items-center gap-4">
-      <TACCButton v-if="navbarMode === 'loggedOut'" class="bg-green" to="/signup">
-        Signup
-      </TACCButton>
-      <TACCButton v-if="navbarMode === 'loggedOut'" class="bg-yellow" to="/login">
-        Login
-      </TACCButton>
-      <TACCButton v-if="navbarMode === 'sitter'" class="bg-green" to="/jobs">
-        Browse Jobs
-      </TACCButton>
-      <TACCButton v-if="navbarMode === 'family'" class="bg-green" to="/post-job">
-        Post a Job
-      </TACCButton>
-      <TACCButton v-if="navbarMode === 'sitter'" class="bg-purple" to="/my-jobs">
-        My Jobs
-      </TACCButton>
-      <TACCButton v-if="navbarMode === 'family'" class="bg-purple" to="/my-jobs">
-        Pending Jobs
-      </TACCButton>
+      <template v-if="navbarMode === 'loggedOut'">
+        <TACCButton class="bg-green" to="/signup">
+          Signup
+        </TACCButton>
+        <TACCButton class="bg-yellow" to="/login">
+          Login
+        </TACCButton>
+      </template>
+      <template v-else-if="navbarMode === 'sitter'">
+        <TACCButton class="bg-green" to="/jobs">
+          Browse Jobs
+        </TACCButton>
+        <TACCButton class="bg-purple" to="/my-jobs">
+          My Jobs
+        </TACCButton>
+      </template>
+      <template v-else-if="navbarMode === 'family'">
+        <TACCButton class="bg-green" to="/post-job">
+          Post a Job
+        </TACCButton>
+        <TACCButton class="bg-purple" to="/my-jobs">
+          Pending Jobs
+        </TACCButton>
+      </template>
       <TACCButton v-if="navbarMode === 'sitter' || navbarMode === 'family'" class="bg-yellow" to="/my-profile">
         Profile
       </TACCButton>
+      <template v-else-if="navbarMode === 'admin'">
+        <TACCButton class="bg-purple" to="/admin">
+          Profile List
+        </TACCButton>
+      </template>
+      <TACCButton v-if="authStore.isLoggedIn" class="bg-red/80" @click="logout">
+        Logout
+      </TACCButton>
+      {{ navbarMode }}
     </div>
   </div>
 </template>
@@ -38,6 +53,15 @@ const navbarMode = computed(() => {
     return 'loggedOut'
   }
 
+  if (authStore.isAdmin) {
+    return 'admin'
+  }
+
   return authStore.accountType
 })
+
+function logout() {
+  authStore.logout()
+  navigateTo('/')
+}
 </script>

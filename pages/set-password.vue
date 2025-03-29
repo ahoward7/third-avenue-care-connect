@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-async function setPassword(signupForm: FamilyProfile | SitterProfile) {
-  await $fetch('profile', { method: 'PATCH', body: { password: signupForm.password } })
+async function setPassword(profile: FamilyProfile | SitterProfile) {
+  await $fetch('/profile/set-password', { method: 'POST', body: profile })
 }
 </script>

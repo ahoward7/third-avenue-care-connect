@@ -1,6 +1,8 @@
 <template>
-  <div class="flex gap-8">
-    <img :src="familyProfile.image" alt="Parent Image" class="w-40 h-40">
+  <div class="flex gap-16 mt-8">
+    <div class="h-fit fun-border">
+      <img :src="familyProfile.image" alt="Family Image" class="w-60 h-60">
+    </div>
     <div class="flex flex-col gap-2">
       <HomeHeader>
         {{ familyProfile.displayName }}

@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { defineEventHandler, readBody } from 'h3'
+import crypto from 'node:crypto'
 import pgk from 'pg'
 
 const { Client } = pgk
@@ -17,19 +17,24 @@ export default defineEventHandler(async (event: H3Event) => {
 
     await client.connect()
 
+    const passwordResetToken = crypto.randomUUID()
+    const passwordResetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000)
+
     const query = `
       UPDATE profiles
-      SET is_approved = $1
-      WHERE id = $2
+      SET is_approved = $1,
+          password_reset_token = $2,
+          password_reset_expires = $3
+      WHERE id = $4
       RETURNING *
     `
-    const values = [profile.isApproved, profile.id]
+    const values = [profile.isApproved, passwordResetToken, passwordResetExpires, profile.id]
     const result = await client.query(query, values)
 
     await client.end()
 
     if (result.rowCount === 0) {
-      throw createError('Profile not found')
+      throw createError({ statusCode: 404, message: 'Profile not found' })
     }
     const updatedProfile = result.rows[0]
 
