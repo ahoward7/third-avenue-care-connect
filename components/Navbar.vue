@@ -40,7 +40,6 @@
       <TACCButton v-if="authStore.isLoggedIn" class="bg-red/80" @click="logout">
         Logout
       </TACCButton>
-      {{ navbarMode }}
     </div>
   </div>
 </template>
