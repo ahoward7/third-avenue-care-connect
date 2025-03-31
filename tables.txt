@@ -12,7 +12,9 @@ CREATE TABLE profiles (
     notes TEXT,
     profileType ENUM('family', 'sitter') NOT NULL,
     isApproved BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    password_reset_token VARCHAR(255) UNIQUE,
+    password_reset_expires TIMESTAMP
 );
 
 CREATE TABLE children (

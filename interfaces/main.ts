@@ -8,16 +8,16 @@ export interface ChildProfile {
 export interface FamilyProfile {
   id?: string | number
   image: string
-  name: string
+  displayName: string
   bio: string
   email: string
   password: string
   phone: string
   address: string
-  notes: string
   children: ChildProfile[]
   profileType: 'family'
   isApproved: boolean
+  isCompleted: boolean
 }
 
 export interface SitterProfile {
@@ -31,6 +31,15 @@ export interface SitterProfile {
   phone: string
   profileType: 'sitter'
   isApproved: boolean
+  isCompleted: boolean
+}
+
+export interface Admin {
+  id?: string | number
+  email: string
+  password: string
+  passwordResetToken: string
+  passwordResetExpires: Date
 }
 
 export interface FamilySignupForm {
@@ -65,4 +74,9 @@ export interface Job {
   sitter: string | null
   kids: ChildProfile[]
   description: string
+}
+
+export interface LoginForm {
+  email: string
+  password: string
 }

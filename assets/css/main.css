@@ -12,3 +12,7 @@
   font-size: 3.40rem;
   line-height: 1;
 }
+
+.fun-border {
+  box-shadow: 0px 0px 0px 6px theme('colors.yellow'), 0px 0px 0px 10px theme('colors.white'), 0px 0px 0px 16px theme('colors.purple'), 0px 0px 0px 20px theme('colors.white'), 0px 0px 0px 26px theme('colors.green');
+}

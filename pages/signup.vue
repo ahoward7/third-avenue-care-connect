@@ -25,14 +25,10 @@
 
 <script setup lang="ts">
 async function familySignup(signupForm: FamilySignupForm) {
-  const data = await $fetch('profile', { method: 'POST', body: signupForm })
-
-  console.log(data)
+  await $fetch('profile', { method: 'POST', body: signupForm })
 }
 
 async function sitterSignup(signupForm: SitterSignupForm) {
-  const data = await $fetch('profile', { method: 'POST', body: signupForm })
-
-  console.log(data)
+  await $fetch('profile', { method: 'POST', body: signupForm })
 }
 </script>

@@ -5,7 +5,7 @@
     </div>
     <div class="grow flex flex-col gap-4">
       <AuthHeader class="border-green">
-        Login
+        Admin Login
       </AuthHeader>
       <AuthLogin @login="login" />
     </div>
@@ -18,19 +18,15 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-async function login(loginValues: LoginForm) {
-  try {
-    const profile = await $fetch('/auth/login', {
-      method: 'POST',
-      body: loginValues,
-    }) as FamilyProfile | SitterProfile
+async function login(loginInfo: LoginForm) {
+  const user = await $fetch<Admin>('/admin-user/login', {
+    method: 'POST',
+    body: JSON.stringify(loginInfo),
+  })
 
-    authStore.login(profile)
-
-    navigateTo('/my-jobs')
-  }
-  catch (e) {
-    console.error('Login failed:', e)
+  if (user.id) {
+    authStore.loginAdmin()
+    navigateTo('/admin')
   }
 }
 </script>

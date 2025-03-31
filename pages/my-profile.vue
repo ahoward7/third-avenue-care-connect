@@ -18,17 +18,17 @@ const sitterProfile: Ref<SitterProfile> = ref({
   phone: '555-555-5555',
   isApproved: false,
   profileType: 'sitter',
+  isCompleted: false,
 })
 
 const familyProfile: Ref<FamilyProfile> = ref({
   image: 'https://cdn2.thecatapi.com/images/e13.jpg',
-  name: 'The Doe Family',
+  displayName: 'The Doe Family',
   bio: 'We are a family of 4 looking for a sitter for our two kids.',
   email: 'doefamily@gmail.com',
   password: '',
   phone: '666-666-6666',
   address: '505 Maple St, Springfield',
-  notes: 'We have a cat named Whiskers.',
   children: [
     {
       name: 'Emma',
@@ -41,5 +41,6 @@ const familyProfile: Ref<FamilyProfile> = ref({
   ],
   profileType: 'family',
   isApproved: false,
+  isCompleted: false,
 })
 </script>

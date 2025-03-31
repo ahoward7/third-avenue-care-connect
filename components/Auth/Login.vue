@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col gap-4 w-full">
     <div>
-      <TACCInput v-model="email" placeholder="Email" :invalid="errors.email !== undefined" />
+      <TACCInput v-model="email" placeholder="Email" :invalid="submitted && errors.email !== undefined" />
       <p v-if="submitted && errors.email" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.email }}
       </p>
     </div>
     <div>
-      <TACCInput v-model="password" type="password" placeholder="Password" :invalid="errors.password !== undefined" />
+      <TACCInput v-model="password" type="password" placeholder="Password" :invalid="submitted && errors.password !== undefined" />
       <p v-if="submitted && errors.password" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.password }}
       </p>
