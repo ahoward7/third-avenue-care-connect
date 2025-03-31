@@ -26,6 +26,8 @@ async function login(loginValues: LoginForm) {
     }) as FamilyProfile | SitterProfile
 
     authStore.login(profile)
+
+    navigateTo('/my-jobs')
   }
   catch (e) {
     console.error('Login failed:', e)

@@ -54,5 +54,7 @@ async function setPassword(password: string) {
   }
 
   await $fetch('/admin-user/set-password', { method: 'POST', body: newAdmin })
+
+  navigateTo('/admin/login')
 }
 </script>

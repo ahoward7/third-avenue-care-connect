@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import crypto from 'node:crypto'
+import bcrypt from 'bcryptjs'
 import pgk from 'pg'
 
 const { Client } = pgk
@@ -18,6 +19,8 @@ export default defineEventHandler(async (event: H3Event) => {
     await client.connect()
 
     const passwordResetToken = crypto.randomUUID()
+
+    const hashedToken = await bcrypt.hash(passwordResetToken, 10)
     const passwordResetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
     const query = `
@@ -28,7 +31,7 @@ export default defineEventHandler(async (event: H3Event) => {
       WHERE id = $4
       RETURNING *
     `
-    const values = [profile.isApproved, passwordResetToken, passwordResetExpires, profile.id]
+    const values = [profile.isApproved, hashedToken, passwordResetExpires, profile.id]
     const result = await client.query(query, values)
 
     await client.end()

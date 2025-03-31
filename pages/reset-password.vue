@@ -30,7 +30,7 @@ const isValidToken = ref(false)
 try {
   const { data } = await useFetch('/profile/get-by-token', { method: 'GET', query: { token } })
 
-  if (data.value) {
+  if (data.value?.id) {
     isValidToken.value = true
     profile.value = data.value
   }
@@ -49,5 +49,7 @@ async function setPassword(password: string) {
   }
 
   await $fetch('/profile/set-password', { method: 'POST', body: newProfile })
+
+  navigateTo('/login')
 }
 </script>

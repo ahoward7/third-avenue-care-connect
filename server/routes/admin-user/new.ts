@@ -21,8 +21,6 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const rawToken = crypto.randomUUID()
 
-    console.log(rawToken)
-
     const hashedToken = await bcrypt.hash(rawToken, 10)
     const passwordResetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
