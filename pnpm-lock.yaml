@@ -81,6 +81,9 @@ importers:
       eslint:
         specifier: ^9.20.1
         version: 9.23.0(jiti@2.4.2)
+      nuxt-nodemailer:
+        specifier: ^1.1.2
+        version: 1.1.2(magicast@0.3.5)(nodemailer@6.10.0)
       typescript:
         specifier: ^5.7.3
         version: 5.8.2
@@ -3514,6 +3517,10 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
+  nodemailer@6.10.0:
+    resolution: {integrity: sha512-SQ3wZCExjeSatLE/HBaXS5vqUOQk6GtBdIIKxiFdmm01mOQZX/POJkO3SUX1wDiYcwUOJwT23scFSC9fY2H8IA==}
+    engines: {node: '>=6.0.0'}
+
   nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
     engines: {node: '>=6'}
@@ -3567,6 +3574,11 @@ packages:
         optional: true
       '@simplewebauthn/server':
         optional: true
+
+  nuxt-nodemailer@1.1.2:
+    resolution: {integrity: sha512-oYi0AnEZu56euRxJ/G7NAQLmRct9ORgKvxF3AcAbVlxfKJJQ7kNPZnlymQbzg9F/SLBlQgSE+mSQR/3Wz6JOIg==}
+    peerDependencies:
+      nodemailer: ^6.9.13
 
   nuxt-storage@1.2.2:
     resolution: {integrity: sha512-quJbZ87NO7QRCSp7YZolot6VwktciSLuTS/sRl8NPz5rAWA84U5Py0y9FmAsbKTiaqJtFcCKSaJGzky948jA3w==}
@@ -9101,6 +9113,8 @@ snapshots:
 
   node-releases@2.0.19: {}
 
+  nodemailer@6.10.0: {}
+
   nopt@5.0.0:
     dependencies:
       abbrev: 1.1.1
@@ -9157,6 +9171,13 @@ snapshots:
     transitivePeerDependencies:
       - argon2
       - bcrypt
+      - magicast
+
+  nuxt-nodemailer@1.1.2(magicast@0.3.5)(nodemailer@6.10.0):
+    dependencies:
+      '@nuxt/kit': 3.16.1(magicast@0.3.5)
+      nodemailer: 6.10.0
+    transitivePeerDependencies:
       - magicast
 
   nuxt-storage@1.2.2: {}
