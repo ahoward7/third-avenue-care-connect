@@ -19,12 +19,12 @@
 const authStore = useAuthStore()
 
 async function login(loginInfo: LoginForm) {
-  const user = await $fetch('/admin/login', {
+  const user = await $fetch<Admin>('/admin-user/login', {
     method: 'POST',
     body: JSON.stringify(loginInfo),
   })
 
-  if (user) {
+  if (user.id) {
     authStore.loginAdmin()
     navigateTo('/admin')
   }

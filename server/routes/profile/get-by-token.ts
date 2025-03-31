@@ -1,10 +1,14 @@
+import type { H3Event } from 'h3'
+import bcrypt from 'bcryptjs'
 import pgk from 'pg'
 import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
 const { Client } = pgk
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event: H3Event) => {
   try {
+    const { token } = getQuery(event) as { token: string }
+
     const client = new Client({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
@@ -16,13 +20,20 @@ export default defineEventHandler(async () => {
 
     const query = `
       SELECT * 
-      FROM profiles
+      FROM profiles 
+      WHERE password_reset_expires > NOW()
     `
     const result = await client.query(query)
 
     await client.end()
 
-    return convertKeysToCamel(result.rows)
+    const profile = result.rows.find(row => bcrypt.compareSync(token, row.password_reset_token))
+
+    if (!profile) {
+      throw createError({ statusCode: 404, message: 'Invalid or expired token' })
+    }
+
+    return convertKeysToCamel(profile)
   }
   catch (e) {
     console.error(e)

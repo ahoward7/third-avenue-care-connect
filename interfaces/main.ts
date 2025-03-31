@@ -34,6 +34,14 @@ export interface SitterProfile {
   isCompleted: boolean
 }
 
+export interface Admin {
+  id?: string | number
+  email: string
+  password: string
+  passwordResetToken: string
+  passwordResetExpires: Date
+}
+
 export interface FamilySignupForm {
   displayName: string
   email: string
