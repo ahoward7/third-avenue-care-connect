@@ -34,6 +34,8 @@ export default defineEventHandler(async (event: H3Event) => {
       return { error: 'Invalid password' }
     }
 
+    await setUserSession(event, { user: { userId: user.id, email: user.email } })
+
     await client.end()
     return {
       id: user.id,

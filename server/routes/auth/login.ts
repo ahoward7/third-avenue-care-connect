@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import bcryptjs from 'bcryptjs'
-import { defineEventHandler, readBody } from 'h3'
+import { createError, defineEventHandler, readBody } from 'h3'
 import pgk from 'pg'
 import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!result.rows[0]) {
       await client.end()
-      throw createError('Invalid email')
+      throw createError({ statusCode: 401, statusMessage: 'Invalid email' })
     }
 
     const user = result.rows[0]
@@ -32,10 +32,13 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!isPasswordCorrect) {
       await client.end()
-      return { error: 'Invalid password' }
+      throw createError({ statusCode: 401, statusMessage: 'Invalid password' })
     }
 
     await client.end()
+
+    await setUserSession(event, { user: { userId: user.id, email: user.email } })
+
     return convertKeysToCamel([user])[0]
   }
   catch (e) {

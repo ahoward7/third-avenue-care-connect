@@ -42,6 +42,11 @@ export interface Admin {
   passwordResetExpires: Date
 }
 
+export interface UserSession {
+  userId: string | number
+  email: string
+}
+
 export interface FamilySignupForm {
   displayName: string
   email: string

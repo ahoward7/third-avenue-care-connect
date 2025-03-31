@@ -25,7 +25,7 @@ async function login(loginInfo: LoginForm) {
   })
 
   if (user.id) {
-    authStore.loginAdmin()
+    authStore.adminLogin(user)
     navigateTo('/admin')
   }
 }

@@ -28,13 +28,13 @@ async function addAdmin() {
     return
   }
 
-  const user = await $fetch('/admin-user/new', {
+  const user = await $fetch<Admin>('/admin-user/new', {
     method: 'POST',
     body: JSON.stringify({ email: email.value }),
   })
 
   if (user) {
-    authStore.loginAdmin()
+    authStore.adminLogin(user)
     navigateTo('/')
   }
 }
