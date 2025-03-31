@@ -35,7 +35,7 @@
 const profiles = ref<(SitterProfile | FamilyProfile)[]>([])
 
 try {
-  profiles.value = await $fetch('/profile')
+  profiles.value = await $fetch('/profile-user')
 }
 catch (error) {
   console.error(error)
@@ -46,7 +46,7 @@ const sitterProfiles = computed(() => profiles.value.filter((profile): profile i
 
 async function updateProfile(profile: FamilyProfile | SitterProfile) {
   try {
-    await $fetch(`/profile/approve`, {
+    await $fetch(`/profile-user/approve`, {
       method: 'POST',
       body: profile,
     })

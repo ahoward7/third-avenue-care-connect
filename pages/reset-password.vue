@@ -28,7 +28,7 @@ const profile = ref<FamilyProfile | SitterProfile | null>(null)
 const isValidToken = ref(false)
 
 try {
-  const { data } = await useFetch('/profile/get-by-token', { method: 'GET', query: { token } })
+  const { data } = await useFetch('/profile-user/get-by-token', { method: 'GET', query: { token } })
 
   if (data.value?.id) {
     isValidToken.value = true
@@ -48,7 +48,7 @@ async function setPassword(password: string) {
     password,
   }
 
-  await $fetch('/profile/set-password', { method: 'POST', body: newProfile })
+  await $fetch('/profile-user/set-password', { method: 'POST', body: newProfile })
 
   navigateTo('/login')
 }
