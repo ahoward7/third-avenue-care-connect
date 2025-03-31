@@ -3,12 +3,14 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = ref(false)
   const profile: Ref<null | FamilyProfile | SitterProfile> = ref(null)
+  const admin: Ref<null | Admin> = ref(null)
   const isAdmin = ref(false)
   const accountType: Ref<AccountType> = ref('family')
 
-  function loginAdmin() {
+  function adminLogin(adminInfo: Admin) {
     isLoggedIn.value = true
     isAdmin.value = true
+    admin.value = adminInfo
   }
 
   function login(profileInfo: FamilyProfile | SitterProfile) {
@@ -27,8 +29,8 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn,
     isAdmin,
     accountType,
-    loginAdmin,
     login,
+    adminLogin,
     logout,
   }
 })

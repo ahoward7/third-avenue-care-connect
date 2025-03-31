@@ -45,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+const { clear } = useUserSession()
 const authStore = useAuthStore()
 
 const navbarMode = computed(() => {
@@ -59,7 +60,8 @@ const navbarMode = computed(() => {
   return authStore.accountType
 })
 
-function logout() {
+async function logout() {
+  await clear()
   authStore.logout()
   navigateTo('/')
 }
