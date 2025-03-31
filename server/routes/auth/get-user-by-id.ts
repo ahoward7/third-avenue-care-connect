@@ -20,7 +20,7 @@ export default defineEventHandler(async (event: H3Event) => {
     let user = await client.query('SELECT * FROM profiles WHERE id = $1', [userId])
 
     if (!user.rows[0]) {
-      const adminResult = await client.query('SELECT * FROM admins WHERE id = $1', [userId])
+      const adminResult = await client.query('SELECT * FROM admin WHERE id = $1', [userId])
 
       if (!adminResult.rows[0]) {
         await client.end()

@@ -5,7 +5,7 @@
         <AuthHeader class="border-green">
           Family Signup
         </AuthHeader>
-        <AuthFamilySignup @signup="familySignup" />
+        <AuthFamilySignup @signup="signup" />
       </div>
       <div class="shrink-0 flex justify-center mx-auto">
         <img src="~/assets/images/hands.png" class="h-[400px]" alt="Hands">
@@ -14,7 +14,7 @@
         <AuthHeader class="border-purple">
           Sitter Signup
         </AuthHeader>
-        <AuthSitterSignup @signup="sitterSignup" />
+        <AuthSitterSignup @signup="signup" />
       </div>
     </div>
     <div class="flex gap-2 mt-8 text-sm italic text-gray">
@@ -24,11 +24,13 @@
 </template>
 
 <script setup lang="ts">
-async function familySignup(signupForm: FamilySignupForm) {
-  await $fetch('profile', { method: 'POST', body: signupForm })
-}
-
-async function sitterSignup(signupForm: SitterSignupForm) {
-  await $fetch('profile', { method: 'POST', body: signupForm })
+async function signup(signupForm: FamilySignupForm | SitterSignupForm) {
+  try {
+    await $fetch('/profile-user', { method: 'POST', body: signupForm })
+    navigateTo('/')
+  }
+  catch (e) {
+    console.error('Error during signup:', e)
+  }
 }
 </script>

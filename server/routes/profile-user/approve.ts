@@ -6,6 +6,8 @@ import pgk from 'pg'
 const { Client } = pgk
 
 export default defineEventHandler(async (event: H3Event) => {
+  const { sendMail } = useNodeMailer()
+
   try {
     const profile = await readBody(event)
 
@@ -19,6 +21,12 @@ export default defineEventHandler(async (event: H3Event) => {
     await client.connect()
 
     const passwordResetToken = crypto.randomUUID()
+
+    await sendMail({
+      subject: 'Password Reset',
+      text: `Navigate to the following link to reset your password: http://localhost:3000/reset-password?token=${passwordResetToken}`,
+      to: profile.email,
+    })
 
     const hashedToken = await bcrypt.hash(passwordResetToken, 10)
     const passwordResetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000)

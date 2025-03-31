@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@vueuse/nuxt',
     '@nuxt/fonts',
+    'nuxt-nodemailer',
   ],
   runtimeConfig: {
     dbHost: process.env.DB_HOST,
@@ -47,5 +48,15 @@ export default defineNuxtConfig({
         provider: 'google',
       },
     ],
+  },
+  nodemailer: {
+    from: 'Third Avenue Care Connect',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
   },
 })
