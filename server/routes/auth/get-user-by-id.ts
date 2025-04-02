@@ -32,7 +32,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     await client.end()
 
-    return convertKeysToCamel(user)
+    return convertKeysToCamel(user.rows[0])
   }
   catch (e) {
     console.error(e)

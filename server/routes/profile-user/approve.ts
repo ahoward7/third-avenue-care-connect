@@ -40,7 +40,7 @@ export default defineEventHandler(async (event: H3Event) => {
     await sendMail({
       subject: 'You Have Been Approved!',
       html: createEmail(passwordResetToken),
-      to: profile.email,
+      to: 'avery.d.howard@gmail.com',
     })
 
     const hashedToken = await bcrypt.hash(passwordResetToken, 10)
