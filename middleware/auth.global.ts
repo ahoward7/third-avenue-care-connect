@@ -1,9 +1,13 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { isLoggedIn } = storeToRefs(useAuthStore())
+  const { isLoggedIn, profile } = storeToRefs(useAuthStore())
   const { login, adminLogin } = useAuthStore()
   const { user } = useUserSession()
 
   if (user.value) {
+    if (isLoggedIn.value && profile.value) {
+      return
+    }
+
     try {
       const { data: userFromDb } = await useFetch<SitterProfile | FamilyProfile | Admin>('/auth/get-user-by-id', { query: user.value })
 

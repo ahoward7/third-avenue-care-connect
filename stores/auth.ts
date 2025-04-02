@@ -27,6 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     isLoggedIn,
+    profile,
     isAdmin,
     accountType,
     login,

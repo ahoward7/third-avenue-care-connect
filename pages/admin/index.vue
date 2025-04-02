@@ -45,6 +45,10 @@ const familyProfiles = computed(() => profiles.value.filter((profile): profile i
 const sitterProfiles = computed(() => profiles.value.filter((profile): profile is SitterProfile => profile.profileType === 'sitter'))
 
 async function updateProfile(profile: FamilyProfile | SitterProfile) {
+  if (!profile.isApproved) {
+    return
+  }
+
   try {
     await $fetch(`/profile-user/approve`, {
       method: 'POST',
