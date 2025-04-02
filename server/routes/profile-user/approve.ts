@@ -1,7 +1,5 @@
 import type { H3Event } from 'h3'
 import crypto from 'node:crypto'
-import fs from 'node:fs'
-import path from 'node:path'
 
 import bcrypt from 'bcryptjs'
 import pgk from 'pg'
@@ -42,7 +40,7 @@ export default defineEventHandler(async (event: H3Event) => {
     await sendMail({
       subject: 'You Have Been Approved!',
       html: createEmail(passwordResetToken),
-      to: 'avery.d.howard@gmail.com',
+      to: profile.email,
     })
 
     const hashedToken = await bcrypt.hash(passwordResetToken, 10)
