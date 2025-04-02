@@ -1,9 +1,26 @@
 import type { H3Event } from 'h3'
 import crypto from 'node:crypto'
+import fs from 'node:fs'
+import path from 'node:path'
+
 import bcrypt from 'bcryptjs'
 import pgk from 'pg'
 
 const { Client } = pgk
+
+function createEmail(token: string) {
+  return `
+    <div>
+      <h1>Profile Approved!</h1>
+      <p>Congratulations! Your profile has been approved. Please follow this link to set your password: 
+        <a href="http://localhost:3000/reset-password?token=${token}">Reset Password</a>
+      </p>
+      <p>If there are any issues, please contact us directly.</p>
+      <br>
+      <h3>Third Avenue Care Connect</h3>
+    </div>
+  `
+}
 
 export default defineEventHandler(async (event: H3Event) => {
   const { sendMail } = useNodeMailer()
@@ -23,9 +40,9 @@ export default defineEventHandler(async (event: H3Event) => {
     const passwordResetToken = crypto.randomUUID()
 
     await sendMail({
-      subject: 'Password Reset',
-      text: `Navigate to the following link to reset your password: http://localhost:3000/reset-password?token=${passwordResetToken}`,
-      to: profile.email,
+      subject: 'You Have Been Approved!',
+      html: createEmail(passwordResetToken),
+      to: 'avery.d.howard@gmail.com',
     })
 
     const hashedToken = await bcrypt.hash(passwordResetToken, 10)

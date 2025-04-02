@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     ],
   },
   nodemailer: {
-    from: 'Third Avenue Care Connect',
+    from: 'Third Avenue Care Connect <avery.d.howard@gmail.com>',
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
