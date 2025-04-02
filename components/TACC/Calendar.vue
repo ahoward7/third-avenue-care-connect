@@ -85,8 +85,7 @@ import { ref, watch } from 'vue'
 const model = defineModel<string>()
 
 function formatDate(date: CalendarDate): string {
-  const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric' }
-  return new Date(date.year, date.month - 1, date.day).toLocaleDateString('en-US', options)
+  return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`
 }
 
 const today = new Date()

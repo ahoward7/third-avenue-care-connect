@@ -72,14 +72,15 @@ export interface Filter {
 
 export interface Job {
   id: string | number
-  name: string
-  image: string
-  address: string
-  timing: string
-  sitter: string | null
-  kids: ChildProfile[]
+  family: string | number | null
+  sitter: string | number | null
+  startTime: string
+  endTime: string
+  date: string
   description: string
 }
+
+export type JobPost = Omit<Job, 'id'>
 
 export interface LoginForm {
   email: string
