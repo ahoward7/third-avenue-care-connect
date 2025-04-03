@@ -12,7 +12,7 @@
           <HomeHeader>
             Trusted Connections for Families and Sitters
           </HomeHeader>
-          <div class="flex flex-col gap-8 pl-8 font-inter">
+          <div class="flex flex-col gap-8 pl-8">
             <HomeBody>
               <template #header>
                 Trusted Babysitters with Verified Backgrounds
@@ -50,7 +50,7 @@
         <HomeHeader>
           Reviews
         </HomeHeader>
-        <div class="flex flex-col gap-8 pl-8 font-inter">
+        <div class="flex flex-col gap-8 pl-8">
           <HomeReview>
             Please take a minute to write a review!
           </HomeReview>

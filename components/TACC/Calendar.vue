@@ -2,7 +2,7 @@
   <CalendarRoot
     v-slot="{ weekDays, grid }"
     :default-value="calendarDate"
-    class="font-inter rounded-xl bg-purple text-white p-4"
+    class="rounded-xl bg-purple text-white p-4"
     fixed-weeks
   >
     <CalendarHeader class="flex items-center justify-between">
