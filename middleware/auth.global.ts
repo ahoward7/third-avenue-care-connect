@@ -1,15 +1,17 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const { isLoggedIn, profile } = storeToRefs(useAuthStore())
   const { login, adminLogin } = useAuthStore()
-  const { user } = useUserSession()
+  const { session } = useUserSession()
+
+  const { user } = session.value
 
   if (['/', '/login', '/signup', '/reset-password'].includes(to.path) || to.path.startsWith('/admin')) {
     return
   }
 
-  if (user.value && !isLoggedIn.value) {
+  if (user && !isLoggedIn.value) {
     try {
-      const { data: userFromDb } = await useFetch<SitterProfile | FamilyProfile | Admin>('/auth/get-user-by-id', { query: user.value })
+      const { data: userFromDb } = await useFetch<SitterProfile | FamilyProfile | Admin>('/auth/get-user-by-id', { query: user })
 
       if ((userFromDb.value as SitterProfile | FamilyProfile)?.profileType) {
         login(userFromDb.value as FamilyProfile | SitterProfile)
@@ -23,7 +25,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
   }
 
-  if (!user.value) {
+  if (!user) {
     return navigateTo('/login')
   }
 

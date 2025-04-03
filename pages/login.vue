@@ -27,7 +27,7 @@ async function login(loginValues: LoginForm) {
 
     authStore.login(profile)
 
-    navigateTo('/my-jobs')
+    window.location.href = '/my-jobs'
   }
   catch (e) {
     console.error('Login failed:', e)

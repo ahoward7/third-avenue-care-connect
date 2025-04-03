@@ -45,11 +45,11 @@
 </template>
 
 <script setup lang="ts">
-const { clear } = useUserSession()
+const { clear, user } = useUserSession()
 const authStore = useAuthStore()
 
 const navbarMode = computed(() => {
-  if (!authStore.isLoggedIn) {
+  if (!authStore.isLoggedIn && !user.value) {
     return 'loggedOut'
   }
 
