@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-16 mt-8">
     <div class="h-fit fun-border">
-      <img :src="familyProfile.image" alt="Family Image" class="w-60 h-60">
+      <img :src="image" alt="Family Image" class="w-60 h-60">
     </div>
     <div class="flex flex-col gap-2">
       <HomeHeader>
@@ -37,4 +37,6 @@ defineProps({
     required: true,
   },
 })
+
+const image = 'https://fakeimg.pl/300/?text=Profile'
 </script>
