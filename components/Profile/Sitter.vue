@@ -10,6 +10,9 @@
         <ProfileField label="Email" :text="sitterProfile.email" />
         <ProfileField label="Phone" :text="sitterProfile.phone" />
       </div>
+      <TACCButton v-if="sitterProfile.isCompleted" class="bg-yellow mt-4" @click="emit('edit')">
+        Edit Profile
+      </TACCButton>
     </div>
   </div>
 </template>
@@ -21,4 +24,6 @@ defineProps({
     required: true,
   },
 })
+
+const emit = defineEmits(['edit'])
 </script>

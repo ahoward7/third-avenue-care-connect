@@ -1,10 +1,10 @@
 <template>
-  <div v-if="profile?.isCompleted">
-    <ProfileSitter v-if="profile?.profileType === 'sitter'" :sitter-profile="profile" />
-    <ProfileFamily v-else :family-profile="profile" />
+  <div v-if="mode === 'view'">
+    <ProfileSitter v-if="profile?.profileType === 'sitter'" :sitter-profile="profile" @edit="mode = 'edit'" />
+    <ProfileFamily v-else-if="profile?.profileType === 'family'" :family-profile="profile" @edit="mode = 'edit'" />
   </div>
   <div v-else>
-    <ProfileFamilyForm v-if="profile?.profileType === 'family'" :family-profile="profile" @update-profile="updateProfile" />
+    <ProfileFamilyForm v-if="profile?.profileType === 'family'" :family-profile="profile" @update-profile="updateProfile" @cancel="mode = 'view'" />
   </div>
 </template>
 
@@ -12,6 +12,7 @@
 const authStore = useAuthStore()
 
 const profile = computed(() => authStore.profile)
+const mode = ref<'view' | 'edit'>(profile.value?.isCompleted ? 'view' : 'edit')
 
 async function updateProfile(updatedProfile: SitterProfile | FamilyProfile) {
   try {

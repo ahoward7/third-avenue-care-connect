@@ -2,7 +2,7 @@
   <div class="flex gap-16 mt-8">
     <div>
       <ProfileLabel>Profile Image</ProfileLabel>
-      <TACCInput v-model="image" type="url" placeholder="Image URL" :invalid="submitted && errors.image !== undefined" />
+      <TACCImage v-model="image" type="url" placeholder="Image URL" :invalid="submitted && errors.image !== undefined" />
       <p v-if="submitted && errors.image" class="h-3 mt-1 pl-3 text-red text-sm">
         {{ errors.image }}
       </p>
@@ -46,7 +46,7 @@
       <div class="flex flex-col gap-2">
         <ProfileLabel>Children</ProfileLabel>
         <div class="pl-8 flex flex-col gap-4">
-          <div>
+          <div class="flex flex-col gap-4">
             <ProfileChildForm
               v-for="(_, index) in children"
               :key="index"
@@ -63,9 +63,14 @@
           </TACCButton>
         </div>
       </div>
-      <TACCButton class="bg-yellow mt-2" @click="submitForm">
-        Update Profile
-      </TACCButton>
+      <div class="flex gap-4 mt-2 border-t-2 border-purple pt-4">
+        <TACCButton class="bg-yellow" @click="submitForm">
+          Update Profile
+        </TACCButton>
+        <TACCButton v-if="familyProfile.isCompleted" class="bg-red/80" @click="emit('cancel')">
+          Cancel
+        </TACCButton>
+      </div>
     </div>
   </div>
 </template>
@@ -81,7 +86,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['updateProfile'])
+const emit = defineEmits(['updateProfile', 'cancel'])
 
 const { familyProfile } = toRefs(props)
 
@@ -93,7 +98,7 @@ const childProfileSchema = yup.object().shape({
 })
 
 const schema = yup.object().shape({
-  image: yup.string().url('Image must be a valid URL').required('Image is required'),
+  image: yup.string().required('Image is required'),
   displayName: yup.string().required('Display name is required'),
   bio: yup.string().required('Bio is required'),
   email: yup.string().email('Must be a valid email').required('Email is required'),
