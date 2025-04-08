@@ -1,4 +1,3 @@
-import type { H3Event } from 'h3'
 import { createError, defineEventHandler } from 'h3'
 import pgk from 'pg'
 import { formatJobs } from '../../utils/formatJobs'
@@ -6,10 +5,8 @@ import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
 const { Client } = pgk
 
-export default defineEventHandler(async (event: H3Event) => {
+export default defineEventHandler(async () => {
   try {
-    const { profileId } = getQuery(event)
-
     const client = new Client({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
@@ -34,20 +31,11 @@ export default defineEventHandler(async (event: H3Event) => {
       JOIN 
           profiles
       ON 
-          jobs.family = profiles.id
-      WHERE
-          jobs.family = $1
-      LIMIT 10
-      OFFSET 0;
+          jobs.family = profiles.id;
     `
-    const values = [profileId]
-    const result = await client.query(query, values)
+    const result = await client.query(query)
 
     await client.end()
-
-    if (!result) {
-      throw createError({ statusCode: 401, statusMessage: 'Invalid profile id' })
-    }
 
     const camelCaseResult = convertKeysToCamel(result.rows)
 

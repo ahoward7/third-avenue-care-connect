@@ -3,14 +3,12 @@
     <HomeHeader>
       My Jobs
     </HomeHeader>
-    <Job v-for="job, index in jobs" :key="job.id" :job="job" :family="family" :index="index" class="w-full" />
+    <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" />
   </div>
 </template>
 
 <script setup lang="ts">
 const authStore = useAuthStore()
-
-const family = authStore.profile as FamilyProfile
 
 const jobs: Ref<Job[]> = ref([])
 

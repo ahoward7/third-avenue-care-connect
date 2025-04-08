@@ -72,7 +72,7 @@ export interface Filter {
 
 export interface Job {
   id: string | number
-  family: string | number | null
+  family: FamilyProfile
   sitter: string | number | null
   startTime: string
   endTime: string

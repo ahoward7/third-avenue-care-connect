@@ -13,20 +13,20 @@
           <div class="flex items-center gap-2">
             <TACCIcon icon="heroicons-solid:home-modern" class="w-6 h-6 text-yellow" />
             <span class="font-semibold">
-              {{ family.address }}
+              {{ job.family.address }}
             </span>
           </div>
           <div class="flex gap-2">
             <TACCIcon icon="heroicons-solid:user" class="w-6 h-6 text-purple" />
             <div class="flex gap-1 items-center">
-              <div v-for="(child, childIndex) in family.children" :key="childIndex">
+              <div v-for="(child, childIndex) in job.family.children" :key="childIndex">
                 <span class="italic font-semibold">
                   {{ child.name }}
                 </span>
                 <span>
                   ({{ child.age }})
                 </span>
-                <span v-if="childIndex < family.children.length - 1">, </span>
+                <span v-if="childIndex < job.family.children.length - 1">, </span>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="w-fit text-white font-wedges tracking-widest px-3 pb-1 pt-2 rounded-tr-md mt-2 overflow-hidden" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
-        {{ family.displayName }}
+        {{ job.family.displayName }}
       </div>
     </div>
   </div>
@@ -56,10 +56,6 @@
 const props = defineProps({
   job: {
     type: Object as PropType<Job>,
-    required: true,
-  },
-  family: {
-    type: Object as PropType<FamilyProfile>,
     required: true,
   },
   index: {
@@ -93,7 +89,7 @@ async function getImageUrl() {
   try {
     const s3Response = await $fetch<{ imageUrl: string }>('/profile-user/s3/get-image', {
       method: 'GET',
-      query: { key: props.family.image || '' },
+      query: { key: props.job.family.image || '' },
     })
 
     if (s3Response && s3Response.imageUrl) {
