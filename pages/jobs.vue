@@ -82,17 +82,20 @@ const filters = ref([
 ])
 
 async function takeJob(job: Job) {
-  job.sitter = authStore.profile?.id || '-1'
+  const jobPut: JobPut = {
+    id: job.id,
+    sitter: authStore.profile?.id || '-1',
+  }
 
   try {
-    if (job.sitter === '-1') {
+    if (jobPut.sitter === '-1') {
       console.error('Sitter ID is not set')
       return
     }
 
     await useFetch('/job/take', {
       method: 'PUT',
-      body: job,
+      body: jobPut,
     })
   }
   catch (error) {

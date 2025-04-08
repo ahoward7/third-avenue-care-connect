@@ -7,7 +7,7 @@ const { Client } = pgk
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    const job = await readBody(event) as Job
+    const job = await readBody(event) as JobPut
 
     const client = new Client({
       host: process.env.DB_HOST,

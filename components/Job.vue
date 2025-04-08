@@ -50,6 +50,9 @@
             <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
               Take Job
             </TACCButton>
+            <TACCButton v-if="job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('giveUpJob')">
+              Give Up Job
+            </TACCButton>
           </div>
         </div>
       </div>
@@ -72,7 +75,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['takeJob'])
+const emit = defineEmits(['takeJob', 'giveUpJob'])
 
 const authStore = useAuthStore()
 
