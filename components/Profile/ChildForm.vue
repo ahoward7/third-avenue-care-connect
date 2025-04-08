@@ -15,13 +15,11 @@
         placeholder="Age"
       />
     </div>
-    <Icon icon="radix-icons:trash" class="shrink-0 w-6 h-6 text-red cursor-pointer mt-8" @click="emit('remove')" />
+    <TACCIcon icon="radix-icons:trash" class="shrink-0 w-6 h-6 text-red cursor-pointer mt-8" @click="emit('remove')" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-
 defineProps({
   index: {
     type: Number,

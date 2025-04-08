@@ -9,7 +9,7 @@
       <CalendarPrev
         class="inline-flex items-center cursor-pointer text-black justify-center rounded-md bg-transparent w-7 h-7 hover:bg-stone-50 active:scale-98 active:transition-all focus:shadow-[0_0_0_2px] focus:shadow-black"
       >
-        <Icon
+        <TACCIcon
           icon="radix-icons:chevron-left"
           class="w-4 h-4"
         />
@@ -18,7 +18,7 @@
       <CalendarNext
         class="inline-flex items-center cursor-pointer justify-center text-black rounded-md bg-transparent w-7 h-7 hover:bg-stone-50 active:scale-98 active:transition-all focus:shadow-[0_0_0_2px] focus:shadow-black"
       >
-        <Icon
+        <TACCIcon
           icon="radix-icons:chevron-right"
           class="w-4 h-4"
         />
@@ -77,7 +77,6 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
 import { CalendarDate } from '@internationalized/date'
 import { CalendarCell, CalendarCellTrigger, CalendarGrid, CalendarGridBody, CalendarGridHead, CalendarGridRow, CalendarHeadCell, CalendarHeader, CalendarHeading, CalendarNext, CalendarPrev, CalendarRoot } from 'reka-ui'
 import { ref, watch } from 'vue'

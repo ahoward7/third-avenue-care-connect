@@ -79,7 +79,7 @@ async function postJob(values: JobPost) {
       },
     })
 
-    navigateTo('/pending-jobs')
+    navigateTo('/my-jobs')
   }
   catch (error) {
     console.error('Error posting job:', error)
