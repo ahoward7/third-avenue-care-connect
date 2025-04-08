@@ -1,11 +1,11 @@
 <template>
-  <div class="rounded-md w-fit h-fit text-center duration-200 hover:brightness-[1.07] cursor-pointer">
-    <NuxtLink :to="to">
+  <button class="rounded-md w-fit h-fit text-center duration-200 hover:brightness-[1.07] cursor-pointer">
+    <NuxtLink tabindex="-1" :to="to">
       <div class="text-white font-semibold outline-none" :class="sizeClass">
         <slot />
       </div>
     </NuxtLink>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +20,7 @@ const props = defineProps({
   },
 })
 
-const sizeClasses = {
+const sizeClasses: { [key: string]: string } = {
   small: 'px-3 py-1 text-sm',
   large: 'px-4 py-3 text-base',
 }

@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  devtools: {
+    enabled: false,
+  },
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
@@ -58,5 +61,8 @@ export default defineNuxtConfig({
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
     },
+  },
+  devServer: {
+    https: false, // make sure this is false or removed
   },
 })
