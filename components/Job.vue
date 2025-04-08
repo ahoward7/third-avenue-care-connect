@@ -39,7 +39,7 @@
             <TACCButton size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
               View Full Profile
             </TACCButton>
-            <TACCButton v-if="!job.sitter" size="small" class="bg-yellow">
+            <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow">
               Take Job
             </TACCButton>
           </div>
@@ -67,6 +67,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const authStore = useAuthStore()
 
 function timeTo12HourFormat(time: string) {
   const [hours, minutes] = time.split(':').map(Number)

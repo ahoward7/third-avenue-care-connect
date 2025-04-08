@@ -10,7 +10,7 @@
     <div class="grow flex flex-col gap-4">
       <div>
         <ProfileLabel>Display Name</ProfileLabel>
-        <TACCInput v-model="displayName" placeholder="Display Name" :invalid="submitted && errors.email !== undefined" />
+        <TACCInput v-model="displayName" placeholder="Display Name" :invalid="submitted && errors.displayName !== undefined" />
         <p v-if="submitted && errors.displayName" class="h-3 mt-1 pl-3 text-red text-sm">
           {{ errors.displayName }}
         </p>

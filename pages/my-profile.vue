@@ -5,6 +5,7 @@
   </div>
   <div v-else>
     <ProfileFamilyForm v-if="profile?.profileType === 'family'" :family-profile="profile" @update-profile="updateProfile" @cancel="mode = 'view'" />
+    <ProfileSitterForm v-else-if="profile?.profileType === 'sitter'" :sitter-profile="profile" @update-profile="updateProfile" @cancel="mode = 'view'" />
   </div>
 </template>
 

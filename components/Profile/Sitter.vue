@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-16 mt-8">
-    <img :src="sitterProfile.image" alt="Sitter Image" class="fun-border w-60 h-60">
+    <img :src="image" alt="Sitter Image" class="fun-border w-60 h-60">
     <div class="flex flex-col gap-2">
       <HomeHeader>
         {{ sitterProfile.firstName }} {{ sitterProfile.lastName }}
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   sitterProfile: {
     type: Object as PropType<SitterProfile>,
     required: true,
@@ -26,4 +26,27 @@ defineProps({
 })
 
 const emit = defineEmits(['edit'])
+
+async function getImageUrl() {
+  try {
+    const s3Response = await $fetch<{ imageUrl: string }>('/profile-user/s3/get-image', {
+      method: 'GET',
+      query: { key: props.sitterProfile.image || '' },
+    })
+
+    if (s3Response && s3Response.imageUrl) {
+      return s3Response.imageUrl
+    }
+    else {
+      console.error('No image URL found in response')
+      return null
+    }
+  }
+  catch (err) {
+    console.error('Failed to fetch image URL:', err)
+    return null
+  }
+}
+
+const image = ref<string>(await getImageUrl() || '')
 </script>
