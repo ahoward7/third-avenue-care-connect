@@ -18,7 +18,7 @@
           <HomeHeader>
             Open Jobs
           </HomeHeader>
-          <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" />
+          <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @take-job="takeJob(job)" />
         </div>
       </div>
     </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script setup lang="ts">
+const authStore = useAuthStore()
+
 const jobs: Ref<Job[]> = ref([])
 
 try {
@@ -78,4 +80,23 @@ const filters = ref([
     checked: false,
   },
 ])
+
+async function takeJob(job: Job) {
+  job.sitter = authStore.profile?.id || '-1'
+
+  try {
+    if (job.sitter === '-1') {
+      console.error('Sitter ID is not set')
+      return
+    }
+
+    await useFetch('/job/take', {
+      method: 'PUT',
+      body: job,
+    })
+  }
+  catch (error) {
+    console.error('Error taking job:', error)
+  }
+}
 </script>

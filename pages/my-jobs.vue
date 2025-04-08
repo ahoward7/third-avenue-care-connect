@@ -17,6 +17,7 @@ try {
     method: 'GET',
     query: {
       profileId: authStore.profile?.id || '-1',
+      profileType: authStore.profile?.profileType || 'sitter',
     },
   })
 

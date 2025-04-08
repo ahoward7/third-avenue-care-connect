@@ -31,7 +31,9 @@ export default defineEventHandler(async () => {
       JOIN 
           profiles
       ON 
-          jobs.family = profiles.id;
+          jobs.family = profiles.id
+      WHERE
+          jobs.sitter IS NULL;
     `
     const result = await client.query(query)
 

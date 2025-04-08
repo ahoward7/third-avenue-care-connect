@@ -1,9 +1,17 @@
 <template>
   <div class="w-[600px] flex pt-3 border-[3px] rounded-md bg-lightgray/20" :class="index % 2 === 0 ? 'border-green' : 'border-purple'">
     <div class="grow flex flex-col gap-4">
-      <div class="flex gap-2 items-center text-gray font-bold text-sm px-4">
-        <TACCIcon icon="heroicons-solid:clock" class="w-6 h-6 text-gray" />
-        {{ `${dateToDayOfWeek(job.date)}, ${dateToMonthAndDay(job.date)}, ${timeTo12HourFormat(job.startTime)} - ${timeTo12HourFormat(job.endTime)}` }}
+      <div class="flex justify-between font-bold text-sm px-4">
+        <span class="flex gap-2 items-center text-gray">
+          <TACCIcon icon="heroicons-solid:clock" class="w-6 h-6" />
+          {{ `${dateToDayOfWeek(job.date)}, ${dateToMonthAndDay(job.date)}, ${timeTo12HourFormat(job.startTime)} - ${timeTo12HourFormat(job.endTime)}` }}
+        </span>
+        <div v-if="authStore.profile?.profileType === 'family' && job.sitter?.firstName" class="flex items-center gap-2 border-b-2 border-yellow">
+          <span class="text-gray">Job taken by:</span>
+          <span class="text-black italic">
+            {{ `${job.sitter.firstName} ${job.sitter.lastName}` }}
+          </span>
+        </div>
       </div>
       <div class="flex gap-8 px-4">
         <div class="shrink-0 flex flex-col gap-1">
@@ -39,7 +47,7 @@
             <TACCButton size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
               View Full Profile
             </TACCButton>
-            <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow">
+            <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
               Take Job
             </TACCButton>
           </div>
@@ -63,6 +71,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const emit = defineEmits(['takeJob'])
 
 const authStore = useAuthStore()
 

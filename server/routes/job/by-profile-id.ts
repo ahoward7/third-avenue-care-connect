@@ -8,7 +8,7 @@ const { Client } = pgk
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    const { profileId } = getQuery(event)
+    const { profileId, profileType } = getQuery(event)
 
     const client = new Client({
       host: process.env.DB_HOST,
@@ -19,27 +19,40 @@ export default defineEventHandler(async (event: H3Event) => {
 
     await client.connect()
 
+    const whereClause = profileType === 'sitter'
+      ? 'jobs.sitter = $1'
+      : 'jobs.family = $1'
+
     const query = `
       SELECT 
-          jobs.*, 
-          profiles.email AS family_email,
-          profiles.phone AS family_phone,
-          profiles.display_name AS family_display_name,
-          profiles.image AS family_image,
-          profiles.bio AS family_bio,
-          profiles.address AS family_address,
-          profiles.children AS family_children
+        jobs.*, 
+        family_profiles.email AS family_email,
+        family_profiles.phone AS family_phone,
+        family_profiles.display_name AS family_display_name,
+        family_profiles.image AS family_image,
+        family_profiles.bio AS family_bio,
+        family_profiles.address AS family_address,
+        family_profiles.children AS family_children,
+    
+        sitter_profiles.first_name AS sitter_first_name,
+        sitter_profiles.last_name AS sitter_last_name
+    
       FROM 
-          jobs
+        jobs
+    
       JOIN 
-          profiles
-      ON 
-          jobs.family = profiles.id
+        profiles AS family_profiles ON jobs.family = family_profiles.id
+    
+      LEFT JOIN 
+        profiles AS sitter_profiles ON jobs.sitter = sitter_profiles.id
+    
       WHERE
-          jobs.family = $1
+        ${whereClause}
+    
       LIMIT 10
       OFFSET 0;
     `
+
     const values = [profileId]
     const result = await client.query(query, values)
 
