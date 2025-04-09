@@ -1,7 +1,7 @@
 <template>
   <div class="w-inherit">
     <div class="flex flex-col gap-16">
-      <div class="flex gap-40">
+      <div class="flex gap-16">
         <div class="flex flex-col gap-4">
           <div class="sticky top-4 flex flex-col gap-4">
             <HomeHeader>
@@ -93,7 +93,7 @@ async function takeJob(job: Job) {
       return
     }
 
-    await useFetch('/job/take', {
+    await $fetch('/job/take', {
       method: 'PUT',
       body: jobPut,
     })

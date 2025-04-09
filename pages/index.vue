@@ -37,7 +37,7 @@
                 For sitters, flexibility is key. You can browse and accept jobs at your convenience, allowing you to manage your schedule effortlessly. By connecting with families in your local church, you’ll find opportunities that not only fit your availability but also align with your values and commitment to the community.
               </template>
             </HomeBody>
-            <TACCButton class="bg-green">
+            <TACCButton to="/signup" class="bg-green">
               Sign Up Now
             </TACCButton>
           </div>
