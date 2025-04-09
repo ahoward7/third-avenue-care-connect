@@ -37,6 +37,10 @@ const amPm = ref('am')
 const modelValue = defineModel<string>()
 const displayValue = ref('')
 
+watch(amPm, () => {
+  modelValue.value = timeTo24HourFormat(displayValue.value, amPm.value)
+})
+
 function formatTime(event: Event) {
   let value = (event.target as HTMLInputElement).value.replace(/\D/g, '')
 
