@@ -27,6 +27,7 @@ export default defineEventHandler(async (event: H3Event) => {
     const query = `
       SELECT 
         jobs.*, 
+        family_profiles.id AS family_id,
         family_profiles.email AS family_email,
         family_profiles.phone AS family_phone,
         family_profiles.display_name AS family_display_name,

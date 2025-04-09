@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="flex gap-4">
-            <TACCButton size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
+            <TACCButton :to="`/profile/${job.family.id}`" size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
               View Full Profile
             </TACCButton>
             <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
