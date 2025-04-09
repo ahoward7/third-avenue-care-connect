@@ -2,21 +2,13 @@ import type { H3Event } from 'h3'
 import crypto from 'node:crypto'
 import bcrypt from 'bcryptjs'
 import { defineEventHandler, readBody } from 'h3'
-import pkg from 'pg'
-
-const { Client } = pkg
+import TACC from '../../utils/taccClient'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
     const { email } = await readBody(event) as { email: string }
 
-    const client = new Client({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      ssl: true,
-    })
+    const client = TACC()
 
     await client.connect()
 

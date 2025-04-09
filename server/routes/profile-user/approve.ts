@@ -2,9 +2,7 @@ import type { H3Event } from 'h3'
 import crypto from 'node:crypto'
 
 import bcrypt from 'bcryptjs'
-import pgk from 'pg'
-
-const { Client } = pgk
+import TACC from '../../utils/taccClient'
 
 function createEmail(token: string) {
   return `
@@ -26,13 +24,7 @@ export default defineEventHandler(async (event: H3Event) => {
   try {
     const profile = await readBody(event)
 
-    const client = new Client({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      ssl: true,
-    })
+    const client = TACC()
 
     await client.connect()
 
