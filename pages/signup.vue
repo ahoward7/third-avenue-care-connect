@@ -1,5 +1,5 @@
 <template>
-  <div class="w-inherit mt-16 font-inter">
+  <div class="w-inherit mt-16">
     <div class="flex">
       <div class="flex flex-col gap-4 w-80">
         <AuthHeader class="border-green">

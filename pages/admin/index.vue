@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-16 font-inter">
+  <div class="flex flex-col gap-16">
     <div class="flex flex-col gap-2">
       <HomeHeader>
         Family Profiles

@@ -1,11 +1,10 @@
 import type { H3Event } from 'h3'
-import bcrypt from 'bcryptjs'
 import TACC from '../../utils/taccClient'
 import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    const { token } = getQuery(event) as { token: string }
+    const { id } = getQuery(event) as { id: string }
 
     const client = TACC()
 
@@ -14,16 +13,16 @@ export default defineEventHandler(async (event: H3Event) => {
     const query = `
       SELECT * 
       FROM profiles 
-      WHERE password_reset_expires > NOW()
+      WHERE id = $1
     `
-    const result = await client.query(query)
+    const result = await client.query(query, [id])
 
     await client.end()
 
-    const profile = result.rows.find(row => bcrypt.compareSync(token, row.password_reset_token))
+    const profile = result.rows[0]
 
     if (!profile) {
-      throw createError({ statusCode: 404, message: 'Invalid or expired token' })
+      throw createError({ statusCode: 404, message: 'Invalid ID' })
     }
 
     return convertKeysToCamel(profile)

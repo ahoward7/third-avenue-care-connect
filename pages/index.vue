@@ -12,7 +12,7 @@
           <HomeHeader>
             Trusted Connections for Families and Sitters
           </HomeHeader>
-          <div class="flex flex-col gap-8 pl-8 font-inter">
+          <div class="flex flex-col gap-8 pl-8">
             <HomeBody>
               <template #header>
                 Trusted Babysitters with Verified Backgrounds
@@ -37,7 +37,7 @@
                 For sitters, flexibility is key. You can browse and accept jobs at your convenience, allowing you to manage your schedule effortlessly. By connecting with families in your local church, you’ll find opportunities that not only fit your availability but also align with your values and commitment to the community.
               </template>
             </HomeBody>
-            <TACCButton class="bg-green">
+            <TACCButton to="/signup" class="bg-green">
               Sign Up Now
             </TACCButton>
           </div>
@@ -50,7 +50,7 @@
         <HomeHeader>
           Reviews
         </HomeHeader>
-        <div class="flex flex-col gap-8 pl-8 font-inter">
+        <div class="flex flex-col gap-8 pl-8">
           <HomeReview>
             Please take a minute to write a review!
           </HomeReview>

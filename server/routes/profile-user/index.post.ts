@@ -1,19 +1,12 @@
 import type { H3Event } from 'h3'
 import { defineEventHandler, readBody } from 'h3'
-import pgk from 'pg'
-
-const { Client } = pgk
+import TACC from '../../utils/taccClient'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
     const signupForm = await readBody(event) as SitterSignupForm | FamilySignupForm
 
-    const client = new Client({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-    })
+    const client = TACC()
 
     await client.connect()
 

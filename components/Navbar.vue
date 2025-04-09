@@ -13,7 +13,7 @@
           Login
         </TACCButton>
       </template>
-      <template v-else-if="navbarMode === 'sitter'">
+      <template v-else-if="navbarMode === 'sitter' && profileComplete">
         <TACCButton class="bg-green" to="/jobs">
           Browse Jobs
         </TACCButton>
@@ -21,7 +21,7 @@
           My Jobs
         </TACCButton>
       </template>
-      <template v-else-if="navbarMode === 'family'">
+      <template v-else-if="navbarMode === 'family' && profileComplete">
         <TACCButton class="bg-green" to="/post-job">
           Post a Job
         </TACCButton>
@@ -45,11 +45,11 @@
 </template>
 
 <script setup lang="ts">
-const { clear } = useUserSession()
+const { clear, user } = useUserSession()
 const authStore = useAuthStore()
 
 const navbarMode = computed(() => {
-  if (!authStore.isLoggedIn) {
+  if (!authStore.isLoggedIn && !user.value) {
     return 'loggedOut'
   }
 
@@ -58,6 +58,10 @@ const navbarMode = computed(() => {
   }
 
   return authStore.accountType
+})
+
+const profileComplete = computed(() => {
+  return authStore.profile?.isCompleted
 })
 
 async function logout() {

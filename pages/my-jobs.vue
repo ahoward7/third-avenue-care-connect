@@ -3,27 +3,53 @@
     <HomeHeader>
       My Jobs
     </HomeHeader>
-    <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" />
+    <template v-if="jobs.length === 0">
+      <div class="w-fit text-lg border-b-2 border-purple">
+        You have no assigned jobs. If you wish to take a job, you can browse the selection of jobs available.
+      </div>
+    </template>
+    <template v-else>
+      <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @give-up-job="giveUpJob(job)" />
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-const jobs: Ref<Job[]> = ref([
-  {
-    id: 1,
-    name: 'The Miller Family',
-    bullets: ['Isabella (5), Lucas (3)', '303 Birch Blvd, Parkside', 'Isabella has a bedtime of 8:30.'],
-    image: 'https://cdn2.thecatapi.com/images/e10.jpg',
-    timing: 'Sun, July 18, 6-9pm',
-    sitter: '123939',
-  },
-  {
-    id: 2,
-    name: 'The Wilson Family',
-    bullets: ['Charlotte (4), Henry (2)', '404 Spruce St, Hilltop', 'Charlotte has a bedtime of 8:00.'],
-    image: 'https://cdn2.thecatapi.com/images/e11.jpg',
-    timing: 'Mon, July 19, 5-7pm',
-    sitter: '238979',
-  },
-])
+const authStore = useAuthStore()
+
+const jobs: Ref<Job[]> = ref([])
+
+try {
+  const { data } = await useFetch<Job[]>('/job/by-profile-id', {
+    method: 'GET',
+    query: {
+      profileId: authStore.profile?.id || '-1',
+      profileType: authStore.profile?.profileType || 'sitter',
+    },
+  })
+
+  if (data.value) {
+    jobs.value = data.value
+  }
+}
+catch (error) {
+  console.error('Error fetching jobs:', error)
+}
+
+async function giveUpJob(job: Job) {
+  const jobPut: JobPut = {
+    id: job.id,
+    sitter: null,
+  }
+
+  try {
+    await $fetch('/job/take', {
+      method: 'PUT',
+      body: jobPut,
+    })
+  }
+  catch (error) {
+    console.error('Error giving up job:', error)
+  }
+}
 </script>

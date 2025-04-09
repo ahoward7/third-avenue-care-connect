@@ -1,5 +1,5 @@
 <template>
-  <div class="w-inherit flex gap-16 mt-16 font-inter">
+  <div class="w-inherit flex gap-16 mt-16">
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/hands.png" class="shrink-0 h-96" alt="Hands">
     </div>
@@ -27,7 +27,7 @@ async function login(loginValues: LoginForm) {
 
     authStore.login(profile)
 
-    navigateTo('/my-jobs')
+    window.location.href = '/my-jobs'
   }
   catch (e) {
     console.error('Login failed:', e)

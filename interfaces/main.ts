@@ -6,7 +6,7 @@ export interface ChildProfile {
 }
 
 export interface FamilyProfile {
-  id?: string | number
+  id?: string
   image: string
   displayName: string
   bio: string
@@ -35,7 +35,7 @@ export interface SitterProfile {
 }
 
 export interface Admin {
-  id?: string | number
+  id?: string
   email: string
   password: string
   passwordResetToken: string
@@ -71,15 +71,21 @@ export interface Filter {
 }
 
 export interface Job {
-  id: string | number
-  name: string
-  image: string
-  address: string
-  timing: string
-  sitter: string | null
-  kids: ChildProfile[]
+  id: string
+  family: FamilyProfile
+  sitter: SitterProfile | null
+  startTime: string
+  endTime: string
+  date: string
   description: string
 }
+
+export interface JobPut {
+  id: string
+  sitter: string | null
+}
+
+export type JobPost = Omit<Job, 'id'>
 
 export interface LoginForm {
   email: string

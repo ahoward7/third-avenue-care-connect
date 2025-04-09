@@ -1,39 +1,32 @@
 import type { H3Event } from 'h3'
-import bcrypt from 'bcryptjs'
+import { createError, defineEventHandler, readBody } from 'h3'
 import TACC from '../../utils/taccClient'
+import { convertKeysToCamel } from '../../utils/snakeToCamel'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    const admin = await readBody(event) as Admin
+    const job = await readBody(event) as JobPut
 
     const client = TACC()
 
     await client.connect()
 
-    const hashedPassword = await bcrypt.hash(admin.password, 10)
-
     const query = `
-      UPDATE admin
-      SET password = $1
+      UPDATE jobs
+      SET sitter = $1
       WHERE id = $2
       RETURNING *
     `
-    const values = [
-      hashedPassword,
-      admin.id,
-    ]
-
+    const values = [job.sitter, job.id]
     const result = await client.query(query, values)
 
     await client.end()
 
-    const updatedAdmin = result.rows[0]
-
-    if (!updatedAdmin) {
-      throw createError({ statusCode: 404, message: 'Admin not found' })
+    if (!result) {
+      throw createError({ statusCode: 401, statusMessage: 'Invalid job' })
     }
 
-    return updatedAdmin
+    return convertKeysToCamel([result.rows[0]])[0]
   }
   catch (e) {
     console.error(e)
