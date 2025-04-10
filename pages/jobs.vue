@@ -22,7 +22,10 @@
         <HomeHeader>
           Open Jobs
         </HomeHeader>
-        <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @take-job="takeJob(job)" />
+        <Job
+          v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full"
+          @take-job="takeJob(job)"
+        />
       </div>
     </div>
   </div>
@@ -36,6 +39,9 @@ const jobs: Ref<Job[]> = ref([])
 try {
   const { data } = await useFetch<Job[]>('/job', {
     method: 'GET',
+    query: {
+      availableOnly: true,
+    },
   })
 
   if (data.value) {
