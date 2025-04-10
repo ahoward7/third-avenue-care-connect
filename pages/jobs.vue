@@ -1,25 +1,28 @@
 <template>
   <div class="w-inherit">
     <div class="flex flex-col gap-16">
-      <div class="flex gap-16">
-        <div class="flex flex-col gap-4">
-          <div class="sticky top-4 flex flex-col gap-4">
-            <HomeHeader>
-              Job Filters
-            </HomeHeader>
-            <div class="flex flex-col gap-4">
-              <TACCCheckbox v-for="filter in filters" :key="filter.id" v-model="filter.checked" class="w-40">
-                {{ filter.name }}
+      <div class="flex flex-col gap-4">
+        <div class="sticky top-4 flex flex-col gap-4">
+          <HomeHeader>
+            Job Filters
+          </HomeHeader>
+          <div class="h-8 flex justify-between">
+            <template v-for="filter, index in filters" :key="filter.id">
+              <TACCCheckbox v-model="filter.checked">
+                <span class="select-none">
+                  {{ filter.name }}
+                </span>
               </TACCCheckbox>
-            </div>
+              <div v-if="index < filters.length - 1" class="h-full border border-purple" />
+            </template>
           </div>
         </div>
-        <div class="grow flex flex-col gap-4">
-          <HomeHeader>
-            Open Jobs
-          </HomeHeader>
-          <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @take-job="takeJob(job)" />
-        </div>
+      </div>
+      <div class="grow flex flex-col gap-4">
+        <HomeHeader>
+          Open Jobs
+        </HomeHeader>
+        <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @take-job="takeJob(job)" />
       </div>
     </div>
   </div>
@@ -72,11 +75,6 @@ const filters = ref([
   {
     id: 6,
     name: 'Weekends',
-    checked: false,
-  },
-  {
-    id: 7,
-    name: 'Repeating Jobs',
     checked: false,
   },
 ])
