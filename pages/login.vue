@@ -23,6 +23,7 @@ async function login(loginValues: LoginForm) {
     const profile = await $fetch('/auth/login', {
       method: 'POST',
       body: loginValues,
+      headers: { 'Content-Type': 'application/json' },
     }) as FamilyProfile | SitterProfile
 
     authStore.login(profile)
