@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-16 mt-8">
-    <div class="h-fit fun-border">
+    <div class="shrink-0 fun-border w-60 h-60">
       <img :src="image" alt="Family Image" class="w-60 h-60">
     </div>
     <div class="flex flex-col gap-2">

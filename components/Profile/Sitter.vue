@@ -1,6 +1,8 @@
 <template>
   <div class="flex gap-16 mt-8">
-    <img :src="image" alt="Sitter Image" class="fun-border w-60 h-60">
+    <div class="shrink-0 fun-border w-60 h-60">
+      <img :src="image" alt="Sitter Image" class="w-60 h-60">
+    </div>
     <div class="flex flex-col gap-2">
       <HomeHeader>
         {{ sitterProfile.firstName }} {{ sitterProfile.lastName }}

@@ -12,7 +12,7 @@ const id = route.params.id as string
 const profile = ref<SitterProfile | FamilyProfile | null>(null)
 
 try {
-  const { data: profileFromDb } = await useFetch('/profile-user/get-by-id', {
+  const { data: profileFromDb } = await useFetch('/profile-user', {
     method: 'GET',
     query: {
       id,

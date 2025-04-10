@@ -28,7 +28,7 @@ const profile = ref<FamilyProfile | SitterProfile | null>(null)
 const isValidToken = ref(false)
 
 try {
-  const { data } = await useFetch('/profile-user/get-by-token', { method: 'GET', query: { token } })
+  const { data } = await useFetch('/profile-user', { method: 'GET', query: { token } })
 
   if (data.value?.id) {
     isValidToken.value = true

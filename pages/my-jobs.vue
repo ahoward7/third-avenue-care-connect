@@ -9,7 +9,10 @@
       </div>
     </template>
     <template v-else>
-      <Job v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full" @give-up-job="giveUpJob(job)" />
+      <Job
+        v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full"
+        @give-up-job="giveUpJob(job)"
+      />
     </template>
   </div>
 </template>
@@ -20,7 +23,7 @@ const authStore = useAuthStore()
 const jobs: Ref<Job[]> = ref([])
 
 try {
-  const { data } = await useFetch<Job[]>('/job/by-profile-id', {
+  const { data } = await useFetch<Job[]>('/job', {
     method: 'GET',
     query: {
       profileId: authStore.profile?.id || '-1',
