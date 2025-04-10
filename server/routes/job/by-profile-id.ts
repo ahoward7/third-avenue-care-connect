@@ -1,8 +1,8 @@
 import type { H3Event } from 'h3'
 import { createError, defineEventHandler } from 'h3'
-import TACC from '../../utils/taccClient'
 import { formatJobs } from '../../utils/formatJobs'
 import { convertKeysToCamel } from '../../utils/snakeToCamel'
+import TACC from '../../utils/taccClient'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
