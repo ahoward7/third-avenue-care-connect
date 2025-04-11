@@ -53,7 +53,7 @@
             <TACCButton v-if="!available && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('giveUpJob')">
               Give Up Job
             </TACCButton>
-            <TACCSpinner v-if="loading" size="20" />
+            <TACCSpinner v-if="loading" :size="28" />
           </div>
         </div>
       </div>

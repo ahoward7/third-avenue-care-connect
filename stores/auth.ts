@@ -7,6 +7,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = ref(false)
   const accountType: Ref<AccountType> = ref('family')
 
+  const errors = ref({
+    database: false,
+    emailOrPassword: false,
+  })
+
   function adminLogin(adminInfo: Admin) {
     isLoggedIn.value = true
     isAdmin.value = true
@@ -25,13 +30,20 @@ export const useAuthStore = defineStore('auth', () => {
     profile.value = null
   }
 
+  function resetErrors() {
+    errors.value.database = false
+    errors.value.emailOrPassword = false
+  }
+
   return {
     isLoggedIn,
     profile,
     isAdmin,
     accountType,
+    errors,
     login,
     adminLogin,
     logout,
+    resetErrors,
   }
 })
