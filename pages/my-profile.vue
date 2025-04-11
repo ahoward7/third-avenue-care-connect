@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const profile = computed(() => authStore.profile)
 const mode = ref<'view' | 'edit'>(profile.value?.isCompleted ? 'view' : 'edit')
@@ -31,6 +32,11 @@ async function updateProfile(updatedProfile: SitterProfile | FamilyProfile) {
     })
 
     mode.value = 'view'
+
+    toastStore.addToast({
+      type: 'success',
+      message: 'Profile updated successfully',
+    })
   }
   catch (e: any) {
     authStore.errors.profileUpdate = true

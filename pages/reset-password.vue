@@ -27,6 +27,7 @@ const query = route.query
 const token = query.token as string | undefined
 
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 const loading = ref(false)
 
 const isValidToken = ref(false)
@@ -51,6 +52,10 @@ async function setPassword(password: string) {
   try {
     await $fetch('/profile-user/set-password', { method: 'POST', body: newProfile })
     navigateTo('/login')
+    toastStore.addToast({
+      type: 'success',
+      message: 'Password set successfully. You can now log in.',
+    })
   }
   catch (error) {
     console.error('Error setting password:', error)

@@ -11,6 +11,9 @@
       <TACCButton class="w-full bg-yellow" @click="addAdmin">
         Add Admin
       </TACCButton>
+      <ErrorText v-if="authStore.errors.addAdmin">
+        There was an error adding the admin. Please try again.
+      </ErrorText>
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -20,6 +23,7 @@
 
 <script setup lang="ts">
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const email = ref('')
 
@@ -28,14 +32,28 @@ async function addAdmin() {
     return
   }
 
-  const user = await $fetch<Admin>('/admin-user/new', {
-    method: 'POST',
-    body: JSON.stringify({ email: email.value }),
-  })
+  try {
+    const user = await $fetch<Admin>('/admin-user/new', {
+      method: 'POST',
+      body: JSON.stringify({ email: email.value }),
+    })
 
-  if (user) {
-    authStore.adminLogin(user)
-    navigateTo('/')
+    if (user) {
+      authStore.adminLogin(user)
+      navigateTo('/')
+    }
+
+    toastStore.addToast({
+      type: 'success',
+      message: 'Admin added successfully',
+    })
+  }
+  catch (error) {
+    console.error('Error adding admin:', error)
+    authStore.errors.addAdmin = true
+  }
+  finally {
+    email.value = ''
   }
 }
 </script>
