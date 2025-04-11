@@ -47,12 +47,16 @@
             <TACCButton :to="`/profile/${job.family.id}`" size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
               View Full Profile
             </TACCButton>
-            <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
+            <TACCButton v-if="available && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="takeJob()">
               Take Job
             </TACCButton>
-            <TACCButton v-if="job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('giveUpJob')">
+            <TACCButton v-if="!available && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="giveUpJob()">
               Give Up Job
             </TACCButton>
+            <TACCSpinner v-if="loading" :size="28" />
+            <ErrorText v-if="action && authStore.errors.job">
+              Error {{ action }} job. Please try again.
+            </ErrorText>
           </div>
         </div>
       </div>
@@ -73,11 +77,21 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['takeJob', 'giveUpJob'])
 
 const authStore = useAuthStore()
+
+const action = ref<'giving up' | 'taking' | null>(null)
+
+const available = computed(() => {
+  return props.job.sitter?.id === null
+})
 
 function timeTo12HourFormat(time: string) {
   const [hours, minutes] = time.split(':').map(Number)
@@ -117,6 +131,16 @@ async function getImageUrl() {
     console.error('Failed to fetch image URL:', err)
     return null
   }
+}
+
+function takeJob() {
+  action.value = 'taking'
+  emit('takeJob')
+}
+
+function giveUpJob() {
+  action.value = 'giving up'
+  emit('giveUpJob')
 }
 
 const image = ref<string | null>(await getImageUrl())

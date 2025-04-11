@@ -29,7 +29,6 @@ export default defineEventHandler(async (event: H3Event) => {
     return convertKeysToCamel([result.rows[0]])[0]
   }
   catch (e) {
-    console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+    throw createError({ statusCode: 500, statusMessage: `Error taking or giving up job: ${e}` })
   }
 })

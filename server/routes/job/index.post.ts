@@ -29,6 +29,6 @@ export default defineEventHandler(async (event: H3Event) => {
   }
   catch (e) {
     console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+    throw createError(`SERVER ERROR: Could not create job: ${e}`)
   }
 })

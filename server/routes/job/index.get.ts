@@ -66,10 +66,6 @@ export default defineEventHandler(async (event: H3Event) => {
 
       const result = await client.query(query, values)
 
-      if (profileId && result.rows.length === 0) {
-        throw createError({ statusCode: 404, statusMessage: 'No jobs found for the given profile' })
-      }
-
       const camelCaseResult = convertKeysToCamel(result.rows)
       return formatJobs(camelCaseResult)
     }

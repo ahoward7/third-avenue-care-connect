@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!result.rows[0]) {
       await client.end()
-      throw createError('Invalid email')
+      throw createError({ statusCode: 401, statusMessage: 'Invalid email or password' })
     }
 
     const user = result.rows[0]
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!isPasswordCorrect) {
       await client.end()
-      return { error: 'Invalid password' }
+      throw createError({ statusCode: 401, statusMessage: 'Invalid email or password' })
     }
 
     await setUserSession(event, { user: { userId: user.id, email: user.email } })
@@ -35,8 +35,10 @@ export default defineEventHandler(async (event: H3Event) => {
       email: user.email,
     }
   }
-  catch (e) {
-    console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+  catch (e: any) {
+    throw createError({
+      statusCode: e.statusCode || 500,
+      statusMessage: `SERVER ERROR ${e.statusCode}: ${e.message}`,
+    })
   }
 })

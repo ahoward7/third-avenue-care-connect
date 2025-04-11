@@ -19,9 +19,15 @@
         <p v-if="submitted && errors.description" class="h-3 mt-1 pl-3 text-red text-sm">
           {{ errors.description }}
         </p>
-        <TACCButton class="w-40 bg-yellow" @click="submitForm">
-          Post Job
-        </TACCButton>
+        <div class="flex gap-8">
+          <TACCButton class="w-40 bg-yellow" @click="submitForm">
+            Post Job
+          </TACCButton>
+          <TACCSpinner v-if="loading" />
+          <ErrorText v-if="authStore.errors.job">
+            Could not post job. Please try again.
+          </ErrorText>
+        </div>
       </div>
       <img src="~/assets/images/mother-daughter.png" class="h-[400px]" alt="Logo">
     </div>
@@ -33,6 +39,8 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const authStore = useAuthStore()
+
+const loading = ref(false)
 
 const submitted = ref(false)
 
@@ -58,12 +66,15 @@ const [startTime] = defineField('startTime')
 const [endTime] = defineField('endTime')
 const [description] = defineField('description')
 
-function submitForm() {
+async function submitForm() {
+  loading.value = true
   submitted.value = true
 
-  handleSubmit((values) => {
-    postJob(values as JobPost)
+  await handleSubmit(async (values) => {
+    await postJob(values as JobPost)
   })()
+
+  loading.value = false
 }
 
 async function postJob(values: JobPost) {
@@ -83,6 +94,7 @@ async function postJob(values: JobPost) {
   }
   catch (error) {
     console.error('Error posting job:', error)
+    authStore.errors.job = true
   }
 }
 </script>

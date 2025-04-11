@@ -8,9 +8,12 @@
         Set Password
       </AuthHeader>
       <AuthSetPassword v-if="isValidToken" :user="profile" @set-password="setPassword($event)" />
-      <div v-else class="bg-red/80 text-center text-white px-2 py-3 rounded-md">
+      <ErrorText v-else>
         Looks like your password reset link is invalid or has expired. Please contact an admin to generate a new link.
-      </div>
+      </ErrorText>
+      <ErrorText v-if="authStore.errors.setPassword">
+        There was an error setting your password. Please try again.
+      </ErrorText>
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -23,33 +26,43 @@ const route = useRoute()
 const query = route.query
 const token = query.token as string | undefined
 
-const profile = ref<FamilyProfile | SitterProfile | null>(null)
+const authStore = useAuthStore()
+const toastStore = useToastStore()
+const loading = ref(false)
 
 const isValidToken = ref(false)
 
-try {
-  const { data } = await useFetch('/profile-user', { method: 'GET', query: { token } })
+const { data: profile } = await useFetch<FamilyProfile | SitterProfile | null>('/profile-user', { method: 'GET', query: { token } })
 
-  if (data.value?.id) {
-    isValidToken.value = true
-    profile.value = data.value
-  }
-  else {
-    console.error('Invalid token or profile not found')
-  }
+if (profile.value?.id) {
+  isValidToken.value = true
 }
-catch (error) {
-  console.error('Error fetching profile:', error)
+else {
+  console.error('Invalid token or profile not found')
 }
 
 async function setPassword(password: string) {
+  loading.value = true
+
   const newProfile = {
     ...profile.value!,
     password,
   }
 
-  await $fetch('/profile-user/set-password', { method: 'POST', body: newProfile })
-
-  navigateTo('/login')
+  try {
+    await $fetch('/profile-user/set-password', { method: 'POST', body: newProfile })
+    navigateTo('/login')
+    toastStore.addToast({
+      type: 'success',
+      message: 'Password set successfully. You can now log in.',
+    })
+  }
+  catch (error) {
+    console.error('Error setting password:', error)
+    authStore.errors.setPassword = true
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>

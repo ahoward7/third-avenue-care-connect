@@ -8,6 +8,13 @@
         Login
       </AuthHeader>
       <AuthLogin @login="login" />
+      <TACCSpinner v-if="loading" class="mt-8 mx-auto" />
+      <ErrorText v-if="authStore.errors.emailOrPassword">
+        Invalid email or password
+      </ErrorText>
+      <ErrorText v-if="authStore.errors.server">
+        Server error, please try again later
+      </ErrorText>
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -18,8 +25,14 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
+const loading = ref(false)
+
 async function login(loginValues: LoginForm) {
+  loading.value = true
+
   try {
+    authStore.resetErrors()
+
     const profile = await $fetch('/auth/login', {
       method: 'POST',
       body: loginValues,
@@ -30,8 +43,23 @@ async function login(loginValues: LoginForm) {
 
     window.location.href = '/my-jobs'
   }
-  catch (e) {
-    console.error('Login failed:', e)
+  catch (e: any) {
+    const statusCode = e.response?.status
+
+    switch (statusCode) {
+      case 401:
+        authStore.errors.emailOrPassword = true
+        break
+      case 500:
+        authStore.errors.server = true
+        break
+      default:
+        authStore.errors.server = true
+        break
+    }
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

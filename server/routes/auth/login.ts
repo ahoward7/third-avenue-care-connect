@@ -16,7 +16,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!result.rows[0]) {
       await client.end()
-      throw createError({ statusCode: 401, statusMessage: 'Invalid email' })
+      throw createError({ statusCode: 401, statusMessage: 'Invalid email or password' })
     }
 
     const user = result.rows[0]
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     if (!isPasswordCorrect) {
       await client.end()
-      throw createError({ statusCode: 401, statusMessage: 'Invalid password' })
+      throw createError({ statusCode: 401, statusMessage: 'Invalid email or password' })
     }
 
     await client.end()
@@ -34,8 +34,10 @@ export default defineEventHandler(async (event: H3Event) => {
 
     return convertKeysToCamel([user])[0]
   }
-  catch (e) {
-    console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+  catch (e: any) {
+    throw createError({
+      statusCode: e.statusCode || 500,
+      statusMessage: `SERVER ERROR ${e.statusCode}: ${e.message}`,
+    })
   }
 })

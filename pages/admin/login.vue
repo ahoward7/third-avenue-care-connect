@@ -8,6 +8,13 @@
         Admin Login
       </AuthHeader>
       <AuthLogin @login="login" />
+      <TACCSpinner v-if="loading" class="mt-8 mx-auto" />
+      <ErrorText v-if="authStore.errors.emailOrPassword">
+        Invalid email or password
+      </ErrorText>
+      <ErrorText v-if="authStore.errors.server">
+        Server error, please try again later
+      </ErrorText>
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -18,15 +25,40 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-async function login(loginInfo: LoginForm) {
-  const user = await $fetch<Admin>('/admin-user/login', {
-    method: 'POST',
-    body: JSON.stringify(loginInfo),
-  })
+const loading = ref(false)
 
-  if (user.id) {
-    authStore.adminLogin(user)
-    navigateTo('/admin')
+async function login(loginInfo: LoginForm) {
+  authStore.resetErrors()
+  loading.value = true
+
+  try {
+    const user = await $fetch<Admin>('/admin-user/login', {
+      method: 'POST',
+      body: JSON.stringify(loginInfo),
+    })
+
+    if (user.id) {
+      authStore.adminLogin(user)
+      navigateTo('/admin')
+    }
+  }
+  catch (e: any) {
+    const statusCode = e.response?.status
+
+    switch (statusCode) {
+      case 401:
+        authStore.errors.emailOrPassword = true
+        break
+      case 500:
+        authStore.errors.server = true
+        break
+      default:
+        authStore.errors.server = true
+        break
+    }
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

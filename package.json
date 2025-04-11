@@ -29,6 +29,7 @@
     "pg": "^8.14.1",
     "pinia": "^3.0.1",
     "reka-ui": "^2.1.1",
+    "sharp": "^0.34.1",
     "vee-validate": "^4.15.0",
     "vue": "latest",
     "vue-router": "latest",

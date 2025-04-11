@@ -1,13 +1,11 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const { isLoggedIn, profile } = storeToRefs(useAuthStore())
-  const { login, adminLogin } = useAuthStore()
+  const { login, adminLogin, resetErrors } = useAuthStore()
   const { session } = useUserSession()
 
-  const { user } = session.value
+  resetErrors()
 
-  if (['/', '/login', '/signup', '/reset-password'].includes(to.path) || to.path.startsWith('/admin')) {
-    return
-  }
+  const { user } = session.value
 
   if (user && !isLoggedIn.value) {
     try {
@@ -23,6 +21,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     catch (e) {
       console.error('Failed to fetch user profile:', e)
     }
+  }
+
+  if (['/', '/login', '/signup', '/reset-password'].includes(to.path) || to.path.startsWith('/admin')) {
+    return
   }
 
   if (!user) {
