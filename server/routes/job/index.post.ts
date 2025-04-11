@@ -9,6 +9,8 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const client = TACC()
 
+    throw createError({ statusCode: 401, statusMessage: 'Invalid job' })
+
     await client.connect()
 
     const query = `
@@ -29,6 +31,6 @@ export default defineEventHandler(async (event: H3Event) => {
   }
   catch (e) {
     console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+    throw createError(`SERVER ERROR: Could not create job: ${e}`)
   }
 })

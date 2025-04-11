@@ -24,6 +24,9 @@
             Post Job
           </TACCButton>
           <TACCSpinner v-if="loading" />
+          <ErrorText v-if="authStore.errors.job">
+            Could not post job. Please try again.
+          </ErrorText>
         </div>
       </div>
       <img src="~/assets/images/mother-daughter.png" class="h-[400px]" alt="Logo">
@@ -91,6 +94,7 @@ async function postJob(values: JobPost) {
   }
   catch (error) {
     console.error('Error posting job:', error)
+    authStore.errors.job = true
   }
 }
 </script>
