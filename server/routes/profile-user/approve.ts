@@ -60,7 +60,6 @@ export default defineEventHandler(async (event: H3Event) => {
     return updatedProfile
   }
   catch (e) {
-    console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+    throw createError(`SERVER ERROR: Could not approve profile: ${e}`)
   }
 })
