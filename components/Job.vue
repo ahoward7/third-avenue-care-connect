@@ -87,10 +87,10 @@ const emit = defineEmits(['takeJob', 'giveUpJob'])
 
 const authStore = useAuthStore()
 
-const action = ref(null)
+const action = ref<'giving up' | 'taking' | null>(null)
 
 const available = computed(() => {
-  return props.job.sitter.id === null
+  return props.job.sitter?.id === null
 })
 
 function timeTo12HourFormat(time: string) {

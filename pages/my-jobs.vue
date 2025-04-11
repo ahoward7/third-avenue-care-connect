@@ -3,7 +3,7 @@
     <HomeHeader>
       My Jobs
     </HomeHeader>
-    <template v-if="jobs.length === 0">
+    <template v-if="jobs?.length === 0">
       <div class="w-fit text-lg border-b-2 border-purple">
         You have no assigned jobs. If you wish to take a job, you can browse the selection of jobs available.
       </div>
@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const selectedJob: Ref<Job | null> = ref(null)
 
@@ -49,6 +50,12 @@ async function giveUpJob(job: Job) {
       method: 'PUT',
       body: jobPut,
     })
+
+    toastStore.addToast({
+      message: 'Job given up successfully.',
+      type: 'success',
+    })
+
     refresh()
   }
   catch (error) {

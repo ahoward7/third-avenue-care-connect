@@ -23,7 +23,7 @@
           Open Jobs
         </HomeHeader>
         <Job
-          v-for="job, index in jobs" :key="job.id" :job="job" :index="index" :loading="loading && selectedJob.id === job.id" class="w-full"
+          v-for="job, index in jobs" :key="job.id" :job="job" :index="index" :loading="loading && selectedJob?.id === job.id" class="w-full"
           @take-job="takeJob(job)"
         />
         <TACCSpinner v-if="loading && !selectedJob" />
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const selectedJob: Ref<Job | null> = ref(null)
 
@@ -99,6 +100,11 @@ async function takeJob(job: Job) {
     await $fetch('/job/give-or-take', {
       method: 'PUT',
       body: jobPut,
+    })
+
+    toastStore.addToast({
+      message: 'Job taken successfully.',
+      type: 'success',
     })
 
     refresh()

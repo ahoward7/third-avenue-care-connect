@@ -91,3 +91,9 @@ export interface LoginForm {
   email: string
   password: string
 }
+
+export interface Toast {
+  id: number
+  message: string
+  type: 'success' | 'error' | 'info'
+}
