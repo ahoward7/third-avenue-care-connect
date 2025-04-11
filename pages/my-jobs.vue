@@ -45,7 +45,7 @@ async function giveUpJob(job: Job) {
   }
 
   try {
-    await $fetch('/job/take', {
+    await $fetch('/job/give-or-take', {
       method: 'PUT',
       body: jobPut,
     })
@@ -53,6 +53,7 @@ async function giveUpJob(job: Job) {
   }
   catch (error) {
     console.error('Error giving up job:', error)
+    authStore.errors.job = true
   }
   finally {
     loading.value = false

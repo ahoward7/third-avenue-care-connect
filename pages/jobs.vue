@@ -96,15 +96,16 @@ async function takeJob(job: Job) {
       return
     }
 
-    await $fetch('/job/take', {
+    await $fetch('/job/give-or-take', {
       method: 'PUT',
       body: jobPut,
     })
 
     refresh()
   }
-  catch (error) {
-    console.error('Error taking job:', error)
+  catch (e) {
+    console.error('Error taking job:', e)
+    authStore.errors.job = true
   }
   finally {
     loading.value = false
