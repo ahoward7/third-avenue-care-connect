@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const errors = ref({
     database: false,
     emailOrPassword: false,
+    setPassword: false,
     job: false,
     profileUpdate: false,
     approve: false,
@@ -36,6 +37,10 @@ export const useAuthStore = defineStore('auth', () => {
   function resetErrors() {
     errors.value.database = false
     errors.value.emailOrPassword = false
+    errors.value.setPassword = false
+    errors.value.job = false
+    errors.value.profileUpdate = false
+    errors.value.approve = false
   }
 
   return {

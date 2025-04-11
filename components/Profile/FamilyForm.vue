@@ -71,7 +71,7 @@
           Cancel
         </TACCButton>
       </div>
-      <ErrorText v-if="authStore.errors.updateProfile">
+      <ErrorText v-if="authStore.errors.profileUpdate">
         Error updating profile. Please try again later.
       </ErrorText>
     </div>

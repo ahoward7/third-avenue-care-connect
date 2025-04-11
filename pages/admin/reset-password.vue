@@ -8,9 +8,12 @@
         Set Password
       </AuthHeader>
       <AuthSetPassword v-if="isValidToken" :user="admin" @set-password="setPassword($event)" />
-      <div v-else class="bg-red/80 text-center text-white px-2 py-3 rounded-md">
+      <ErrorText v-else>
         Looks like your password reset link is invalid or has expired. Please contact an admin to generate a new link.
-      </div>
+      </ErrorText>
+      <ErrorText v-if="authStore.errors.setPassword">
+        There was an error setting your password. Please try again.
+      </ErrorText>
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -23,31 +26,23 @@ const route = useRoute()
 const query = route.query
 const token = query.token as string | undefined
 
-const admin = ref<Admin | null>(null)
+const authStore = useAuthStore()
+const loading = ref(false)
 
 const isValidToken = ref(false)
 
-try {
-  if (!token) {
-    console.error('No token provided')
-  }
-  else {
-    const { data } = await useFetch<Admin>('/admin-user/get-by-token', { method: 'GET', query: { token } })
+const { data: admin } = await useFetch<Admin | null>('/admin-user/get-by-token', { method: 'GET', query: { token } })
 
-    if (data.value?.id) {
-      isValidToken.value = true
-      admin.value = data.value as Admin
-    }
-    else {
-      console.error('Invalid token or admin not found')
-    }
-  }
+if (admin.value?.id) {
+  isValidToken.value = true
 }
-catch (error) {
-  console.error('Error fetching admin:', error)
+else {
+  console.error('Invalid token or admin not found')
 }
 
 async function setPassword(password: string) {
+  loading.value = true
+
   const newAdmin: Admin = {
     ...admin.value!,
     password,

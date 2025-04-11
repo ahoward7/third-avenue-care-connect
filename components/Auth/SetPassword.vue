@@ -45,6 +45,8 @@ const [password] = defineField('password')
 const [confirmPassword] = defineField('confirmPassword')
 
 function submitForm() {
+  submitted.value = true
+
   handleSubmit(async () => {
     emit('setPassword', password.value)
   })()

@@ -9,8 +9,6 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const client = TACC()
 
-    throw createError({ statusCode: 401, statusMessage: 'Invalid job' })
-
     await client.connect()
 
     const query = `

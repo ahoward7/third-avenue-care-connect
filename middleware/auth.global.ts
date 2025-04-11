@@ -1,7 +1,9 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const { isLoggedIn, profile } = storeToRefs(useAuthStore())
-  const { login, adminLogin } = useAuthStore()
+  const { login, adminLogin, resetErrors } = useAuthStore()
   const { session } = useUserSession()
+
+  resetErrors()
 
   const { user } = session.value
 
