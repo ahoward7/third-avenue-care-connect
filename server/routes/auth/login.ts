@@ -21,7 +21,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const user = result.rows[0]
 
-    const isPasswordCorrect = bcryptjs.compareSync(password, user.password)
+    const isPasswordCorrect = await bcryptjs.compare(password, user.password)
 
     if (!isPasswordCorrect) {
       await client.end()
@@ -35,9 +35,11 @@ export default defineEventHandler(async (event: H3Event) => {
     return convertKeysToCamel([user])[0]
   }
   catch (e: any) {
+    const statusCode = e.statusCode || 500
+
     throw createError({
-      statusCode: e.statusCode || 500,
-      statusMessage: `SERVER ERROR ${e.statusCode}: ${e.message}`,
+      statusCode,
+      statusMessage: `SERVER ERROR ${statusCode}: ${e.message}`,
     })
   }
 })

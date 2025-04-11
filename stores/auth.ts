@@ -15,6 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
     profileUpdate: false,
     approve: false,
     addAdmin: false,
+    server: false,
   })
 
   function adminLogin(adminInfo: Admin) {
