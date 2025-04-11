@@ -23,9 +23,10 @@
           Open Jobs
         </HomeHeader>
         <Job
-          v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full"
+          v-for="job, index in jobs" :key="job.id" :job="job" :index="index" :loading="loading && selectedJob.id === job.id" class="w-full"
           @take-job="takeJob(job)"
         />
+        <TACCSpinner v-if="loading && !selectedJob" />
       </div>
     </div>
   </div>
@@ -34,23 +35,18 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-const jobs: Ref<Job[]> = ref([])
+const selectedJob: Ref<Job | null> = ref(null)
 
-try {
-  const { data } = await useFetch<Job[]>('/job', {
-    method: 'GET',
-    query: {
-      availableOnly: true,
-    },
-  })
+const loading = ref(true)
 
-  if (data.value) {
-    jobs.value = data.value
-  }
-}
-catch (error) {
-  console.error('Error fetching jobs:', error)
-}
+const { data: jobs, refresh } = await useFetch<Job[]>('/job', {
+  method: 'GET',
+  query: {
+    availableOnly: true,
+  },
+})
+
+loading.value = false
 
 const filters = ref([
   {
@@ -86,6 +82,9 @@ const filters = ref([
 ])
 
 async function takeJob(job: Job) {
+  selectedJob.value = job
+  loading.value = true
+
   const jobPut: JobPut = {
     id: job.id,
     sitter: authStore.profile?.id || '-1',
@@ -101,9 +100,14 @@ async function takeJob(job: Job) {
       method: 'PUT',
       body: jobPut,
     })
+
+    refresh()
   }
   catch (error) {
     console.error('Error taking job:', error)
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

@@ -5,10 +5,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const { user } = session.value
 
-  if (['/', '/login', '/signup', '/reset-password'].includes(to.path) || to.path.startsWith('/admin')) {
-    return
-  }
-
   if (user && !isLoggedIn.value) {
     try {
       const { data: userFromDb } = await useFetch<SitterProfile | FamilyProfile | Admin>('/auth/get-user-by-id', { query: user })
@@ -23,6 +19,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     catch (e) {
       console.error('Failed to fetch user profile:', e)
     }
+  }
+
+  if (['/', '/login', '/signup', '/reset-password'].includes(to.path) || to.path.startsWith('/admin')) {
+    return
   }
 
   if (!user) {

@@ -35,7 +35,12 @@
 const profiles = ref<(SitterProfile | FamilyProfile)[]>([])
 
 try {
-  profiles.value = await $fetch('/profile-user')
+  profiles.value = await $fetch('/profile-user', {
+    method: 'GET',
+    query: {
+      all: true,
+    },
+  })
 }
 catch (error) {
   console.error(error)

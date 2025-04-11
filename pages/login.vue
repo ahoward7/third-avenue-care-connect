@@ -8,6 +8,7 @@
         Login
       </AuthHeader>
       <AuthLogin @login="login" />
+      <TACCSpinner v-if="loading" class="mt-8 mx-auto" />
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -18,7 +19,11 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
+const loading = ref(false)
+
 async function login(loginValues: LoginForm) {
+  loading.value = true
+
   try {
     const profile = await $fetch('/auth/login', {
       method: 'POST',
@@ -32,6 +37,9 @@ async function login(loginValues: LoginForm) {
   }
   catch (e) {
     console.error('Login failed:', e)
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

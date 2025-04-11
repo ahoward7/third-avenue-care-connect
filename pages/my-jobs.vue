@@ -7,10 +7,11 @@
       <div class="w-fit text-lg border-b-2 border-purple">
         You have no assigned jobs. If you wish to take a job, you can browse the selection of jobs available.
       </div>
+      <TACCSpinner v-if="loading && !selectedJob" />
     </template>
     <template v-else>
       <Job
-        v-for="job, index in jobs" :key="job.id" :job="job" :index="index" class="w-full"
+        v-for="job, index in jobs" :key="job.id" :job="job" :index="index" :loading="loading && selectedJob?.id === job.id" class="w-full"
         @give-up-job="giveUpJob(job)"
       />
     </template>
@@ -20,26 +21,24 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-const jobs: Ref<Job[]> = ref([])
+const selectedJob: Ref<Job | null> = ref(null)
 
-try {
-  const { data } = await useFetch<Job[]>('/job', {
-    method: 'GET',
-    query: {
-      profileId: authStore.profile?.id || '-1',
-      profileType: authStore.profile?.profileType || 'sitter',
-    },
-  })
+const loading = ref(true)
 
-  if (data.value) {
-    jobs.value = data.value
-  }
-}
-catch (error) {
-  console.error('Error fetching jobs:', error)
-}
+const { data: jobs, refresh } = await useFetch<Job[]>('/job', {
+  method: 'GET',
+  query: {
+    profileId: authStore.profile?.id || '-1',
+    profileType: authStore.profile?.profileType || 'sitter',
+  },
+})
+
+loading.value = false
 
 async function giveUpJob(job: Job) {
+  selectedJob.value = job
+  loading.value = true
+
   const jobPut: JobPut = {
     id: job.id,
     sitter: null,
@@ -50,9 +49,13 @@ async function giveUpJob(job: Job) {
       method: 'PUT',
       body: jobPut,
     })
+    refresh()
   }
   catch (error) {
     console.error('Error giving up job:', error)
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

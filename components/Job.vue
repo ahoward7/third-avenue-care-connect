@@ -47,12 +47,13 @@
             <TACCButton :to="`/profile/${job.family.id}`" size="small" :class="index % 2 === 0 ? 'bg-green' : 'bg-purple'">
               View Full Profile
             </TACCButton>
-            <TACCButton v-if="!job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
+            <TACCButton v-if="available && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('takeJob')">
               Take Job
             </TACCButton>
-            <TACCButton v-if="job.sitter && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('giveUpJob')">
+            <TACCButton v-if="!available && authStore.profile?.profileType === 'sitter'" size="small" class="bg-yellow" @click="emit('giveUpJob')">
               Give Up Job
             </TACCButton>
+            <TACCSpinner v-if="loading" size="20" />
           </div>
         </div>
       </div>
@@ -73,11 +74,19 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['takeJob', 'giveUpJob'])
 
 const authStore = useAuthStore()
+
+const available = computed(() => {
+  return props.job.sitter.id === null
+})
 
 function timeTo12HourFormat(time: string) {
   const [hours, minutes] = time.split(':').map(Number)

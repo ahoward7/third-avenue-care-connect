@@ -8,6 +8,7 @@
         Admin Login
       </AuthHeader>
       <AuthLogin @login="login" />
+      <TACCSpinner v-if="loading" class="mt-8 mx-auto" />
     </div>
     <div class="w-72 flex justify-center">
       <img src="~/assets/images/mother-daughter.png" class="shrink-0 h-96" alt="Logo">
@@ -18,15 +19,27 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-async function login(loginInfo: LoginForm) {
-  const user = await $fetch<Admin>('/admin-user/login', {
-    method: 'POST',
-    body: JSON.stringify(loginInfo),
-  })
+const loading = ref(false)
 
-  if (user.id) {
-    authStore.adminLogin(user)
-    navigateTo('/admin')
+async function login(loginInfo: LoginForm) {
+  loading.value = true
+
+  try {
+    const user = await $fetch<Admin>('/admin-user/login', {
+      method: 'POST',
+      body: JSON.stringify(loginInfo),
+    })
+
+    if (user.id) {
+      authStore.adminLogin(user)
+      navigateTo('/admin')
+    }
+  }
+  catch (error) {
+    console.error('Login failed:', error)
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>
