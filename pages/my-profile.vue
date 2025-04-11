@@ -15,15 +15,24 @@ const authStore = useAuthStore()
 const profile = computed(() => authStore.profile)
 const mode = ref<'view' | 'edit'>(profile.value?.isCompleted ? 'view' : 'edit')
 
+const loading = ref(false)
+
 async function updateProfile(updatedProfile: SitterProfile | FamilyProfile) {
+  authStore.resetErrors()
+  loading.value = true
+
   try {
     await $fetch('/profile-user/', {
       method: 'PUT',
       body: { ...updatedProfile, id: profile.value?.id || -1 },
     })
   }
-  catch (error) {
-    console.error('Failed to update profile:', error)
+  catch (e: any) {
+    authStore.errors.updateProfile = true
+    console.error('Error updating profile:', e)
+  }
+  finally {
+    loading.value = false
   }
 }
 </script>

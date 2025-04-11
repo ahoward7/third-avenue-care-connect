@@ -10,6 +10,9 @@ export const useAuthStore = defineStore('auth', () => {
   const errors = ref({
     database: false,
     emailOrPassword: false,
+    job: false,
+    profileUpdate: false,
+    profileGet: false,
   })
 
   function adminLogin(adminInfo: Admin) {

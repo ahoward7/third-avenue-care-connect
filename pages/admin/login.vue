@@ -9,10 +9,10 @@
       </AuthHeader>
       <AuthLogin @login="login" />
       <TACCSpinner v-if="loading" class="mt-8 mx-auto" />
-      <ErrorText v-if="authStore.errors.emailOrPassword" class="mt-4">
+      <ErrorText v-if="authStore.errors.emailOrPassword">
         Invalid email or password
       </ErrorText>
-      <ErrorText v-if="authStore.errors.server" class="mt-4">
+      <ErrorText v-if="authStore.errors.server">
         Server error, please try again later
       </ErrorText>
     </div>

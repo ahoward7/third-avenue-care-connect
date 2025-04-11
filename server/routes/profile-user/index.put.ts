@@ -60,8 +60,7 @@ export default defineEventHandler(async (event: H3Event) => {
       return result.rows[0]
     }
   }
-  catch (e) {
-    console.error(e)
-    throw createError(`POSTGRES: ${e}`)
+  catch (e: any) {
+    throw createError(`SERVER ERROR: Could not update profile: ${e}`)
   }
 })

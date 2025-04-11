@@ -51,6 +51,9 @@
           Cancel
         </TACCButton>
       </div>
+      <ErrorText v-if="authStore.errors.updateProfile">
+        Error updating profile. Please try again later.
+      </ErrorText>
     </div>
   </div>
 </template>
@@ -67,6 +70,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['updateProfile', 'cancel'])
+
+const authStore = useAuthStore()
 
 const { sitterProfile } = toRefs(props)
 
